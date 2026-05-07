@@ -104,7 +104,7 @@ export default function App() {
       <ThemeToggle />
       <BackgroundDecoration />
 
-      <header className="pt-20 pb-32 px-6">
+      <header className="pt-20 pb-12 px-6">
         <nav className="max-w-7xl mx-auto flex justify-between items-center mb-32">
           <motion.div 
             initial={{ opacity: 0, x: -20 }}
