@@ -109,18 +109,20 @@ export default function App() {
           <motion.div 
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            onClick={() => {
-              setSecretCounter(prev => {
-                if (prev + 1 >= 5) {
-                  setIsAdminView(true);
-                  return 0;
-                }
-                return prev + 1;
-              });
-            }}
-            className="flex items-center gap-3 group cursor-pointer"
+            className="flex items-center gap-3 group"
           >
-            <div className="w-12 h-12 bg-gradient-to-br from-brand-primary to-brand-secondary rounded-2xl flex items-center justify-center shadow-lg shadow-brand-primary/30 group-hover:rotate-12 transition-transform animate-pulse will-change-transform transform-gpu">
+            <div 
+              onClick={() => {
+                setSecretCounter(prev => {
+                  if (prev + 1 >= 5) {
+                    setIsAdminView(true);
+                    return 0;
+                  }
+                  return prev + 1;
+                });
+              }}
+              className="w-12 h-12 bg-gradient-to-br from-brand-primary to-brand-secondary rounded-2xl flex items-center justify-center shadow-lg shadow-brand-primary/30 group-hover:rotate-12 transition-transform animate-pulse will-change-transform transform-gpu cursor-pointer"
+            >
               <Film className="text-white" size={24} />
             </div>
             <div className="relative overflow-hidden px-2 py-1">
