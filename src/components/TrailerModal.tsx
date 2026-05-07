@@ -48,6 +48,7 @@ export default function TrailerModal({ url, duration, onClose }: TrailerModalPro
       setAdTimer((prev) => {
         if (prev <= 1) {
           clearInterval(interval);
+          setShowAd(false);
           return 0;
         }
         return prev - 1;

@@ -836,7 +836,7 @@ export default function AdminPanel() {
                               : "bg-white/5 border-white/10 text-white/40 hover:bg-white/10"
                           )}
                         >
-                          Trailer Ads (5s)
+                          Trailer Ads ({trailerAdDuration}s)
                         </button>
                         <button 
                           type="button"
@@ -848,7 +848,7 @@ export default function AdminPanel() {
                               : "bg-white/5 border-white/10 text-white/40 hover:bg-white/10"
                           )}
                         >
-                          Download Ads (10s)
+                          Download Ads ({downloadAdDuration}s)
                         </button>
                       </div>
                     </div>
@@ -962,7 +962,7 @@ export default function AdminPanel() {
                           {ad.isActive ? 'Live' : 'Paused'}
                         </span>
                         <span className="text-[8px] font-black px-2 py-0.5 rounded tracking-tighter uppercase bg-brand-primary/20 text-brand-primary border border-brand-primary/20">
-                          {ad.type}
+                          {ad.type} ({ad.type === 'trailer' ? trailerAdDuration : downloadAdDuration}s)
                         </span>
                       </div>
                       <div className="flex items-center gap-4 text-white/30 text-[10px]">
