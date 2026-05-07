@@ -60,8 +60,29 @@
   100% { transform: translate3d(-50%, 0, 0); }
 }
 
+@keyframes sweep {
+  0% { transform: translate3d(-300%, 0, 0) skewX(-20deg); }
+  100% { transform: translate3d(500%, 0, 0) skewX(-20deg); }
+}
+
+@keyframes sweep-slow {
+  0%, 70% { transform: translate3d(-300%, 0, 0) skewX(-20deg); }
+  100% { transform: translate3d(500%, 0, 0) skewX(-20deg); }
+}
+
+.animate-sweep {
+  animation: sweep 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  will-change: transform;
+}
+
+.animate-sweep-slow {
+  animation: sweep-slow 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  will-change: transform;
+}
+
 .animate-gradient-x {
-  animation: gradient-x 5s ease infinite, text-glow 3s ease-in-out infinite;
+  animation: gradient-x 5s linear infinite;
+  background-size: 200% auto;
 }
 
 @keyframes gradient-x {
@@ -75,7 +96,7 @@
 }
 
 .text-glow-effect {
-  text-shadow: 0 0 20px var(--color-brand-primary), 0 0 40px var(--color-brand-secondary);
+  text-shadow: 0 0 10px rgba(255,61,0,0.5), 0 0 20px rgba(255,61,0,0.3);
 }
 
 .movie-card-gradient {

@@ -9,20 +9,11 @@ export default function TrendingBanner({ trendingTitles }: TrendingBannerProps) 
   if (!trendingTitles.length) return null;
 
   return (
-    <div className="max-w-7xl mx-auto px-6 mb-24">
-      <div className="relative group overflow-hidden rounded-2xl bg-white/[0.03] border border-white/10 glass-panel shadow-2xl shadow-brand-primary/10">
+    <div className="max-w-7xl mx-auto px-4 md:px-6 mb-8 md:mb-16">
+      <div className="relative group overflow-hidden rounded-2xl bg-white/[0.03] border border-white/10 glass-panel shadow-xl shadow-brand-primary/5">
         {/* Animated Light Sweep Effect */}
-        <motion.div 
-          animate={{
-            left: ['-100%', '300%'],
-          }}
-          transition={{
-            duration: 3,
-            repeat: Infinity,
-            ease: "easeInOut",
-            repeatDelay: 1
-          }}
-          className="absolute top-0 bottom-0 w-48 bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-[35deg] pointer-events-none"
+        <div 
+          className="absolute top-0 bottom-0 w-48 bg-gradient-to-r from-transparent via-white/[0.15] to-transparent pointer-events-none animate-sweep-slow"
         />
 
         <div className="relative z-10 flex items-center h-10">
@@ -43,15 +34,14 @@ export default function TrendingBanner({ trendingTitles }: TrendingBannerProps) 
                   <motion.div
                     key={i}
                     animate={{
-                      opacity: [0.3, 0.6, 0.3],
-                      scale: [0.98, 1, 0.98]
+                      opacity: [0.5, 1, 0.5]
                     }}
                     transition={{
                       duration: 4,
                       repeat: Infinity,
                       delay: i * 0.2
                     }}
-                    className="text-[10px] font-bold text-white uppercase tracking-wide flex items-center gap-6 will-change-transform transform-gpu"
+                    className="text-[10px] font-bold text-white uppercase tracking-wide flex items-center gap-6 will-change-opacity"
                   >
                     <span>{title}</span>
                     <span className="w-0.5 h-0.5 rounded-full bg-brand-primary" />

@@ -31,25 +31,16 @@ export default function MovieCard({ movie, onWatchTrailer, onDownload }: MovieCa
       />
 
       {/* Shimmer Effect */}
-      <motion.div 
-        animate={{
-          left: ['-100%', '200%'],
-        }}
-        transition={{
-          duration: 3,
-          repeat: Infinity,
-          ease: "easeInOut",
-          repeatDelay: Math.random() * 5 + 5
-        }}
-        className="absolute inset-y-0 w-32 bg-gradient-to-r from-transparent via-white/[0.05] to-transparent skew-x-[-20deg] pointer-events-none will-change-[left] transform-gpu"
+      <div 
+        className="absolute inset-y-0 w-48 bg-gradient-to-r from-transparent via-white/[0.08] to-transparent pointer-events-none animate-sweep"
       />
       
       <div className="absolute inset-0 movie-card-gradient opacity-80 group-hover:opacity-100 transition-opacity" />
       
-      <div className="absolute inset-0 p-3 md:p-5 flex flex-col justify-end md:transform md:translate-y-6 md:group-hover:translate-y-0 transition-transform duration-500 ease-out z-10">
+      <div className="absolute inset-0 p-3 md:p-5 flex flex-col justify-end transform translate-y-0 md:translate-y-6 md:group-hover:translate-y-0 transition-transform duration-500 ease-out z-10">
         <h3 className="text-sm md:text-xl font-bold font-display mb-2 md:mb-3 drop-shadow-lg leading-tight line-clamp-2 md:group-hover:text-glow-effect transition-all duration-300 transform group-hover:scale-105 origin-left">{movie.name}</h3>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+        <div className="grid grid-cols-1 gap-2 md:grid-cols-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-500 delay-100">
           <button
             onClick={() => onWatchTrailer(movie.trailerUrl)}
             className="bg-white/20 hover:bg-white/30 backdrop-blur-md text-white py-1.5 md:py-2 px-2 md:px-4 rounded-lg md:rounded-xl flex items-center justify-center gap-1.5 md:gap-2 transition-all active:scale-95"

@@ -104,8 +104,8 @@ export default function App() {
       <ThemeToggle />
       <BackgroundDecoration />
 
-      <header className="pt-20 pb-12 px-6">
-        <nav className="max-w-7xl mx-auto flex justify-between items-center mb-32">
+      <header className="pt-20 pb-6 px-4 md:px-6">
+        <nav className="max-w-7xl mx-auto flex justify-between items-center mb-16 md:mb-24 relative z-20">
           <motion.div 
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -151,7 +151,7 @@ export default function App() {
             initial={{ scale: 0.95, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="text-5xl md:text-8xl font-black font-display mb-8 tracking-tighter leading-[0.9] drop-shadow-2xl will-change-transform transform-gpu"
+            className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black font-display mb-6 md:mb-8 tracking-tighter leading-[1] md:leading-[0.9] drop-shadow-2xl will-change-transform transform-gpu"
           >
             DISCOVER YOUR <br className="hidden md:block" />
             <span className="bg-gradient-to-r from-brand-primary via-brand-secondary to-brand-primary bg-[length:200%_auto] bg-clip-text text-transparent animate-gradient-x inline-block">NEXT STORY</span>
@@ -180,7 +180,7 @@ export default function App() {
           </div>
         ) : paginatedMovies.length > 0 ? (
           <>
-            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-8">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 md:gap-6 lg:gap-8">
               <AnimatePresence mode="popLayout">
                 {paginatedMovies.map((movie) => (
                   <MovieCard 

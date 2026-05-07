@@ -7,12 +7,19 @@ export default function BackgroundDecoration() {
   const y2 = useTransform(scrollY, [0, 1000], [0, -200]);
 
   useEffect(() => {
+    let rafId: number;
     const handleMouseMove = (e: MouseEvent) => {
-      document.documentElement.style.setProperty('--mouse-x', `${e.clientX}px`);
-      document.documentElement.style.setProperty('--mouse-y', `${e.clientY}px`);
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        document.documentElement.style.setProperty('--mouse-x', `${e.clientX}px`);
+        document.documentElement.style.setProperty('--mouse-y', `${e.clientY}px`);
+      });
     };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
   }, []);
 
   return (
@@ -40,7 +47,8 @@ export default function BackgroundDecoration() {
           repeat: Infinity,
           ease: "easeInOut"
         }}
-        className="absolute top-[-20%] left-[-20%] w-[70%] h-[70%] bg-brand-primary/10 dark:bg-brand-primary/20 blur-[150px] rounded-full will-change-transform transform-gpu"
+        className="absolute top-[-20%] left-[-20%] w-[70%] max-w-[800px] aspect-square rounded-full will-change-transform transform-gpu opacity-70 md:opacity-100"
+        style={{ background: 'radial-gradient(circle, var(--color-brand-primary) 0%, transparent 60%)', mixBlendMode: 'screen', opacity: 0.15 } as any}
       />
 
       <motion.div 
@@ -56,23 +64,24 @@ export default function BackgroundDecoration() {
           repeat: Infinity,
           ease: "easeInOut"
         }}
-        className="absolute bottom-[-20%] right-[-20%] w-[70%] h-[70%] bg-brand-secondary/5 dark:bg-brand-secondary/10 blur-[150px] rounded-full will-change-transform transform-gpu"
+        className="absolute bottom-[-20%] right-[-20%] w-[70%] max-w-[800px] aspect-square rounded-full will-change-transform transform-gpu opacity-70 md:opacity-100"
+        style={{ background: 'radial-gradient(circle, var(--color-brand-secondary) 0%, transparent 60%)', mixBlendMode: 'screen', opacity: 0.1 } as any}
       />
 
       {/* Interactive Spotlight */}
       <motion.div 
         animate={{
-          opacity: [0.4, 0.6, 0.4]
+          opacity: [0.3, 0.5, 0.3]
         }}
         transition={{
           duration: 5,
           repeat: Infinity,
           ease: "easeInOut"
         }}
-        className="absolute inset-0 transition-opacity duration-1000 opacity-30 dark:opacity-50"
+        className="absolute top-0 left-0 w-[800px] h-[800px] transition-opacity duration-1000 opacity-20 dark:opacity-40 pointer-events-none hidden md:block will-change-transform transform-gpu"
         style={{
-          background: `radial-gradient(800px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), var(--color-brand-primary), transparent 85%)`,
-          mixBlendMode: 'soft-light'
+          background: `radial-gradient(circle, var(--color-brand-primary), transparent 70%)`,
+          transform: `translate3d(calc(var(--mouse-x, 0px) - 400px), calc(var(--mouse-y, 0px) - 400px), 0)`
         } as any}
       />
 
@@ -80,28 +89,27 @@ export default function BackgroundDecoration() {
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background/50 dark:to-background/80" />
 
       {/* Floating Particles */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(15)].map((_, i) => (
+      <div className="absolute inset-0 overflow-hidden pointer-events-none hidden md:block">
+        {[...Array(10)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute rounded-full bg-white opacity-20"
+            className="absolute rounded-full bg-brand-primary opacity-20"
             style={{
               width: Math.random() * 4 + 2 + 'px',
               height: Math.random() * 4 + 2 + 'px',
               left: Math.random() * 100 + '%',
               top: Math.random() * 100 + '%',
-              filter: `blur(${Math.random() * 2 + 1}px)`,
             }}
             animate={{
-              y: [0, Math.random() * -100 - 50],
+              y: [0, -100],
               x: [0, Math.random() * 50 - 25],
-              opacity: [0, 0.4, 0],
-              scale: [0, 1, 0.5]
+              opacity: [0, 0.3, 0],
+              scale: [0, 1, 0]
             }}
             transition={{
               duration: Math.random() * 5 + 5,
               repeat: Infinity,
-              ease: "easeInOut",
+              ease: "linear",
               delay: Math.random() * 5
             }}
           />

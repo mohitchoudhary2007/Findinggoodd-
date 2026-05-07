@@ -425,7 +425,7 @@ export default function AdminPanel() {
       <Toaster position="top-center" reverseOrder={false} />
       <div className="max-w-7xl mx-auto">
         <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12 relative">
-          <div className="absolute -left-10 top-1/2 -translate-y-1/2 w-40 h-40 bg-brand-primary/10 blur-[50px] rounded-full pointer-events-none" />
+          <div className="absolute -left-10 top-1/2 -translate-y-1/2 w-40 h-40 rounded-full pointer-events-none" style={{ background: 'radial-gradient(circle, rgba(255,61,0,0.15) 0%, transparent 70%)' }} />
           <div className="relative z-10">
             <h1 className="text-4xl font-bold font-display flex items-center gap-4">
               <span className="text-glow-effect bg-gradient-to-r from-brand-primary to-white bg-clip-text text-transparent">Control Center</span>
@@ -485,7 +485,7 @@ export default function AdminPanel() {
             <>
                   <div className="lg:col-span-1">
                 <form onSubmit={handleSaveMovie} className="glass-panel p-8 rounded-[2rem] sticky top-8 space-y-6 shadow-2xl relative overflow-hidden group">
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-brand-primary/10 blur-[40px] rounded-full pointer-events-none group-hover:bg-brand-primary/20 transition-colors duration-500" />
+                  <div className="absolute top-0 right-0 w-48 h-48 rounded-full pointer-events-none transition-opacity duration-500 opacity-50 group-hover:opacity-100" style={{ background: 'radial-gradient(circle, rgba(255,61,0,0.15) 0%, transparent 70%)', transform: 'translate(20%, -20%)' }} />
                   <h2 className="text-2xl font-bold font-display flex items-center gap-3 relative z-10">
                     {isEditing ? <Edit3 className="text-brand-primary animate-bounce" /> : <Plus className="text-brand-secondary animate-pulse" />}
                     <span className="bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent">{isEditing ? 'Edit Movie' : 'New Movie Entry'}</span>
@@ -820,7 +820,7 @@ export default function AdminPanel() {
                   key={item.id} 
                   className="glass-panel p-8 rounded-3xl space-y-4 hover:border-brand-primary/30 hover:shadow-[0_0_30px_rgba(255,61,0,0.1)] transition-all duration-300 group relative overflow-hidden"
                 >
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-brand-primary/5 blur-[30px] rounded-full pointer-events-none group-hover:bg-brand-primary/15 transition-colors duration-500" />
+                  <div className="absolute top-0 right-0 w-40 h-40 rounded-full pointer-events-none transition-opacity duration-500 opacity-50 group-hover:opacity-100" style={{ background: 'radial-gradient(circle, rgba(255,61,0,0.1) 0%, transparent 70%)', transform: 'translate(20%, -20%)' }} />
                   <div className="flex justify-between items-start relative z-10">
                     <div>
                       <div className="flex items-center gap-3 mb-1">
@@ -868,7 +868,7 @@ export default function AdminPanel() {
             <>
               <div className="lg:col-span-1">
                 <form onSubmit={handleSaveAd} className="glass-panel p-8 rounded-[2rem] sticky top-8 space-y-6 shadow-2xl relative overflow-hidden group">
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-brand-primary/10 blur-[40px] rounded-full pointer-events-none group-hover:bg-brand-primary/20 transition-colors duration-500" />
+                  <div className="absolute top-0 right-0 w-48 h-48 rounded-full pointer-events-none transition-opacity duration-500 opacity-50 group-hover:opacity-100" style={{ background: 'radial-gradient(circle, rgba(255,61,0,0.15) 0%, transparent 70%)', transform: 'translate(20%, -20%)' }} />
                   <h2 className="text-2xl font-bold font-display flex items-center gap-3 relative z-10">
                     {adEditing ? <Edit3 className="text-brand-primary animate-bounce" /> : <Plus className="text-brand-secondary animate-pulse" />}
                     <span className="bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent">{adEditing ? 'Edit Ad' : 'New Ad Banner'}</span>
