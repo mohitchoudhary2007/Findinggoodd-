@@ -29,10 +29,10 @@ const SocialLink = ({ href, icon: Icon, colorClass }: { href: string; icon: any;
 
 export default function Footer({ onLegalClick, config }: FooterProps) {
   const links = config?.socialLinks || {
-    instagram: '#',
-    twitter: '#',
-    facebook: '#',
-    mail: 'contact@findinggoodd.com'
+    instagram: '',
+    twitter: '',
+    facebook: '',
+    mail: ''
   };
 
   return (
@@ -69,10 +69,18 @@ export default function Footer({ onLegalClick, config }: FooterProps) {
         </div>
 
         <div className="flex gap-4">
-          <SocialLink href={links.instagram || '#'} icon={Instagram} colorClass="bg-red-500" />
-          <SocialLink href={links.twitter || '#'} icon={Twitter} colorClass="bg-blue-400" />
-          <SocialLink href={links.facebook || '#'} icon={Facebook} colorClass="bg-blue-600" />
-          <SocialLink href={`mailto:${links.mail || 'contact@findinggoodd.com'}`} icon={Mail} colorClass="bg-brand-primary" />
+          {links.instagram && links.instagram !== '#' && (
+            <SocialLink href={links.instagram} icon={Instagram} colorClass="bg-red-500" />
+          )}
+          {links.twitter && links.twitter !== '#' && (
+            <SocialLink href={links.twitter} icon={Twitter} colorClass="bg-blue-400" />
+          )}
+          {links.facebook && links.facebook !== '#' && (
+            <SocialLink href={links.facebook} icon={Facebook} colorClass="bg-blue-600" />
+          )}
+          {links.mail && links.mail !== '#' && (
+            <SocialLink href={links.mail.startsWith('mailto:') ? links.mail : `mailto:${links.mail}`} icon={Mail} colorClass="bg-brand-primary" />
+          )}
         </div>
       </div>
       
