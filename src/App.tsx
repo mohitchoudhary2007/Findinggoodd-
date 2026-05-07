@@ -19,6 +19,7 @@ import TrendingBanner from '@/src/components/TrendingBanner';
 import MovieCard from '@/src/components/MovieCard';
 import FeedbackModal from '@/src/components/FeedbackModal';
 import TrailerModal from '@/src/components/TrailerModal';
+import DownloadModal from '@/src/components/DownloadModal';
 import LegalModal from '@/src/components/LegalModal';
 import Footer from '@/src/components/Footer';
 import AdminPanel from '@/src/components/AdminPanel';
@@ -35,6 +36,7 @@ export default function App() {
   // Modals state
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
   const [trailerUrl, setTrailerUrl] = useState<string | null>(null);
+  const [downloadInfo, setDownloadInfo] = useState<{ name: string, url: string } | null>(null);
   const [legalType, setLegalType] = useState<'privacy' | 'terms' | null>(null);
 
   useEffect(() => {
@@ -160,6 +162,7 @@ export default function App() {
                   key={movie.id} 
                   movie={movie} 
                   onWatchTrailer={setTrailerUrl}
+                  onDownload={(name, url) => setDownloadInfo({ name, url })}
                 />
               ))}
             </AnimatePresence>
@@ -181,6 +184,12 @@ export default function App() {
       <TrailerModal 
         url={trailerUrl} 
         onClose={() => setTrailerUrl(null)} 
+      />
+
+      <DownloadModal
+        movieName={downloadInfo?.name || ''}
+        targetUrl={downloadInfo?.url || null}
+        onClose={() => setDownloadInfo(null)}
       />
 
       <LegalModal 

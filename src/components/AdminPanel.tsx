@@ -21,10 +21,11 @@ import {
   signInWithPhoneNumber
 } from '@/src/lib/firebase';
 import { onAuthStateChanged, signOut, ConfirmationResult } from 'firebase/auth';
-import { Movie, Feedback } from '@/src/types';
+import { Movie, Feedback, Ad } from '@/src/types';
 import { cn } from '@/src/lib/utils';
 import { motion, AnimatePresence } from 'motion/react';
 import { toast, Toaster } from 'react-hot-toast';
+import { Monitor, Play, Eye } from 'lucide-react';
 import BackgroundDecoration from '@/src/components/BackgroundDecoration';
 
 const ADMIN_PHONE = '8058349947';
@@ -36,7 +37,8 @@ export default function AdminPanel() {
   const [isLoading, setIsLoading] = useState(true);
   const [movies, setMovies] = useState<Movie[]>([]);
   const [feedback, setFeedback] = useState<Feedback[]>([]);
-  const [tab, setTab] = useState<'movies' | 'feedback' | 'config'>('movies');
+  const [ads, setAds] = useState<Ad[]>([]);
+  const [tab, setTab] = useState<'movies' | 'feedback' | 'config' | 'ads'>('movies');
 
   // Login Form State
   const [loginPhone, setLoginPhone] = useState('');
@@ -47,12 +49,19 @@ export default function AdminPanel() {
 
   // Form State
   const [isEditing, setIsEditing] = useState<string | null>(null);
+  const [adEditing, setAdEditing] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     name: '',
     posterUrl: '',
     downloadUrl: '',
     trailerUrl: '',
     isTrending: false
+  });
+
+  const [adFormData, setAdFormData] = useState({
+    imageUrl: '',
+    targetUrl: '',
+    isActive: true
   });
   
   const [trendingInput, setTrendingInput] = useState('');
@@ -116,6 +125,13 @@ export default function AdminPanel() {
       handleFirestoreError(error, OperationType.LIST, 'feedback');
     });
 
+    const qAds = query(collection(db, 'ads'), orderBy('createdAt', 'desc'));
+    const unsubAds = onSnapshot(qAds, (snapshot) => {
+      setAds(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Ad)));
+    }, (error) => {
+      handleFirestoreError(error, OperationType.LIST, 'ads');
+    });
+
     const unsubConfig = onSnapshot(doc(db, 'config', 'app'), (doc) => {
       if (doc.exists()) {
         const data = doc.data();
@@ -132,6 +148,7 @@ export default function AdminPanel() {
     return () => {
       unsubMovies();
       unsubFeedback();
+      unsubAds();
       unsubConfig();
     };
   }, [isAdmin]);
@@ -222,6 +239,52 @@ export default function AdminPanel() {
       alert("Configuration updated successfully!");
     } catch (err) {
       handleFirestoreError(err, OperationType.WRITE, 'config/app');
+    }
+  };
+
+  const handleSaveAd = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      if (adEditing) {
+        await updateDoc(doc(db, 'ads', adEditing), {
+          ...adFormData,
+          updatedAt: serverTimestamp()
+        });
+        setAdEditing(null);
+        toast.success('Ad updated');
+      } else {
+        await addDoc(collection(db, 'ads'), {
+          ...adFormData,
+          createdAt: serverTimestamp()
+        });
+        toast.success('Ad published');
+      }
+      setAdFormData({ imageUrl: '', targetUrl: '', isActive: true });
+    } catch (err) {
+      handleFirestoreError(err, adEditing ? OperationType.UPDATE : OperationType.CREATE, adEditing ? `ads/${adEditing}` : 'ads');
+    }
+  };
+
+  const handleToggleAd = async (id: string, currentStatus: boolean) => {
+    try {
+      await updateDoc(doc(db, 'ads', id), {
+        isActive: !currentStatus,
+        updatedAt: serverTimestamp()
+      });
+      toast.success('Ad status updated');
+    } catch (err) {
+      handleFirestoreError(err, OperationType.UPDATE, `ads/${id}`);
+    }
+  };
+
+  const handleDeleteAd = async (id: string) => {
+    if (confirm("Delete this advertisement permanently?")) {
+      try {
+        await deleteDoc(doc(db, 'ads', id));
+        toast.success('Ad removed');
+      } catch (err) {
+        handleFirestoreError(err, OperationType.DELETE, `ads/${id}`);
+      }
     }
   };
 
@@ -351,6 +414,13 @@ export default function AdminPanel() {
           >
             <Film size={20} />
             Manage Movies
+          </button>
+          <button 
+            onClick={() => setTab('ads')}
+            className={cn("flex items-center gap-2 px-8 py-4 rounded-2xl font-bold transition-all whitespace-nowrap", tab === 'ads' ? "bg-brand-primary text-white shadow-lg shadow-brand-primary/20" : "bg-white/5 text-white/40 hover:bg-white/10")}
+          >
+            <Monitor size={20} />
+            Manage Ads
           </button>
           <button 
             onClick={() => setTab('config')}
@@ -708,6 +778,138 @@ export default function AdminPanel() {
                 </div>
               )}
             </div>
+          )}
+
+          {tab === 'ads' && (
+            <>
+              <div className="lg:col-span-1">
+                <form onSubmit={handleSaveAd} className="glass-panel p-8 rounded-3xl sticky top-8 space-y-6">
+                  <h2 className="text-2xl font-bold font-display flex items-center gap-3">
+                    {adEditing ? <Edit3 /> : <Plus />}
+                    {adEditing ? 'Edit Ad' : 'New Ad Banner'}
+                  </h2>
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold text-white/40 uppercase tracking-widest pl-1 flex items-center gap-2">
+                        <ImageIcon size={14} /> Banner Image URL
+                      </label>
+                      <input 
+                        value={adFormData.imageUrl}
+                        onChange={e => setAdFormData({...adFormData, imageUrl: e.target.value})}
+                        className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-brand-primary outline-none transition-all"
+                        placeholder="https://..."
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold text-white/40 uppercase tracking-widest pl-1 flex items-center gap-2">
+                        <LinkIcon size={14} /> Target URL (Optional)
+                      </label>
+                      <input 
+                        value={adFormData.targetUrl}
+                        onChange={e => setAdFormData({...adFormData, targetUrl: e.target.value})}
+                        className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-brand-primary outline-none transition-all"
+                        placeholder="https://..."
+                      />
+                    </div>
+                    <label className="flex items-center gap-3 cursor-pointer group p-4 bg-white/5 rounded-xl border border-white/5 hover:border-brand-primary transition-all">
+                      <input 
+                        type="checkbox"
+                        checked={adFormData.isActive}
+                        onChange={e => setAdFormData({...adFormData, isActive: e.target.checked})}
+                        className="w-5 h-5 accent-brand-primary"
+                      />
+                      <span className="font-bold text-sm">Active & Visible</span>
+                    </label>
+                  </div>
+                  <div className="flex gap-3">
+                    <button type="submit" className="flex-1 bg-brand-primary hover:bg-brand-primary/80 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-all active:scale-95 shadow-xl shadow-brand-primary/20">
+                      <Save size={20} />
+                      {adEditing ? 'Update Ad' : 'Publish Ad'}
+                    </button>
+                    {adEditing && (
+                      <button 
+                        type="button" 
+                        onClick={() => {
+                          setAdEditing(null);
+                          setAdFormData({ imageUrl: '', targetUrl: '', isActive: true });
+                        }}
+                        className="bg-white/10 hover:bg-white/20 p-4 rounded-xl"
+                      >
+                        <X size={20} />
+                      </button>
+                    )}
+                  </div>
+                </form>
+              </div>
+
+              <div className="lg:col-span-2 space-y-4">
+                <h2 className="text-2xl font-bold font-display mb-6">Active Ad Library ({ads.length})</h2>
+                {ads.map(ad => (
+                  <motion.div 
+                    layout
+                    key={ad.id}
+                    className="glass-panel p-4 rounded-2xl flex items-center gap-6 group hover:border-brand-primary/30 transition-all overflow-hidden"
+                  >
+                    <div className="w-40 h-24 bg-foreground/5 rounded-xl overflow-hidden shadow-lg border border-white/5">
+                      <img src={ad.imageUrl} className="w-full h-full object-cover" alt="" referrerPolicy="no-referrer" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <h3 className="font-bold text-sm truncate max-w-[200px]">{ad.imageUrl}</h3>
+                        <span className={cn(
+                          "text-[8px] font-black px-2 py-0.5 rounded tracking-tighter uppercase",
+                          ad.isActive ? "bg-green-500 text-white" : "bg-white/10 text-white/40"
+                        )}>
+                          {ad.isActive ? 'Live' : 'Paused'}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-4 text-white/30 text-[10px]">
+                        <span className="flex items-center gap-1"><LinkIcon size={10} /> {ad.targetUrl || 'No Link'}</span>
+                        <span className="flex items-center gap-1"><Eye size={10} /> Shown on Trailers</span>
+                      </div>
+                    </div>
+                    <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <button 
+                        onClick={() => handleToggleAd(ad.id, ad.isActive)}
+                        className={cn(
+                          "p-3 rounded-xl transition-all",
+                          ad.isActive ? "bg-amber-500/10 text-amber-500 hover:bg-amber-500/20" : "bg-green-500/10 text-green-500 hover:bg-green-500/20"
+                        )}
+                        title={ad.isActive ? 'Pause' : 'Activate'}
+                      >
+                        <Play size={18} className={cn(ad.isActive ? "rotate-90" : "")} />
+                      </button>
+                      <button 
+                        onClick={() => {
+                          setAdEditing(ad.id);
+                          setAdFormData({
+                            imageUrl: ad.imageUrl,
+                            targetUrl: ad.targetUrl || '',
+                            isActive: ad.isActive
+                          });
+                        }}
+                        className="p-3 bg-white/5 hover:bg-white/10 rounded-xl transition-all"
+                      >
+                        <Edit3 size={18} />
+                      </button>
+                      <button 
+                        onClick={() => handleDeleteAd(ad.id)}
+                        className="p-3 bg-red-500/10 hover:bg-red-500/20 text-red-500 rounded-xl transition-all"
+                      >
+                        <Trash2 size={18} />
+                      </button>
+                    </div>
+                  </motion.div>
+                ))}
+                {ads.length === 0 && (
+                  <div className="py-20 text-center opacity-10">
+                    <Monitor size={64} className="mx-auto mb-4" />
+                    <p className="text-xl font-bold">No advertisement banners yet</p>
+                  </div>
+                )}
+              </div>
+            </>
           )}
         </div>
       </div>

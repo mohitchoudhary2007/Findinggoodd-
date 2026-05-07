@@ -6,9 +6,10 @@ import { Movie } from '@/src/types';
 interface MovieCardProps {
   movie: Movie;
   onWatchTrailer: (url: string) => void;
+  onDownload: (name: string, url: string) => void;
 }
 
-export default function MovieCard({ movie, onWatchTrailer }: MovieCardProps) {
+export default function MovieCard({ movie, onWatchTrailer, onDownload }: MovieCardProps) {
   return (
     <motion.div
       layout
@@ -38,17 +39,13 @@ export default function MovieCard({ movie, onWatchTrailer }: MovieCardProps) {
             <span className="font-semibold text-[10px] md:text-sm uppercase md:capitalize tracking-wider md:tracking-normal">Trailer</span>
           </button>
           
-          <motion.a
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            href={movie.downloadUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            onClick={() => onDownload(movie.name, movie.downloadUrl)}
             className="bg-brand-primary hover:bg-brand-primary/80 text-white py-1.5 md:py-2 px-2 md:px-4 rounded-lg md:rounded-xl flex items-center justify-center gap-1.5 md:gap-2 transition-all active:scale-95 shadow-lg shadow-brand-primary/20"
           >
             <Download size={14} className="md:w-[18px] md:h-[18px]" />
             <span className="font-semibold text-[10px] md:text-sm uppercase md:capitalize tracking-wider md:tracking-normal">Download</span>
-          </motion.a>
+          </button>
         </div>
       </div>
       

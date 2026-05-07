@@ -19,6 +19,14 @@ export interface Feedback {
   createdAt: Timestamp | Date;
 }
 
+export interface Ad {
+  id: string;
+  imageUrl: string;
+  targetUrl?: string;
+  isActive: boolean;
+  createdAt: Timestamp | Date;
+}
+
 export interface AppConfig {
   trendingMovies: string[];
   siteName?: string;

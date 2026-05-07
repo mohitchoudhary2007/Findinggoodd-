@@ -51,6 +51,19 @@
         },
         "updatedAt": { "type": "string", "format": "date-time" }
       }
+    },
+    "Ad": {
+      "title": "Ad",
+      "description": "Advertisement banner data.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "imageUrl": { "type": "string", "format": "uri" },
+        "targetUrl": { "type": "string", "format": "uri" },
+        "isActive": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["imageUrl", "isActive"]
     }
   },
   "firestore": {
@@ -65,6 +78,10 @@
     "/config/{configId}": {
       "schema": "AppConfig",
       "description": "Global settings."
+    },
+    "/ads/{adId}": {
+      "schema": "Ad",
+      "description": "Ad banners."
     },
     "/admins/{adminId}": {
       "schema": { "type": "object", "properties": { "email": { "type": "string" } } },

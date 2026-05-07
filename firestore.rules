@@ -52,6 +52,13 @@ service cloud.firestore {
              data.updatedAt == request.time;
     }
 
+    function isValidAd(data) {
+      return data.imageUrl is string && data.imageUrl.size() <= 1000 &&
+             (data.targetUrl == null || (data.targetUrl is string && data.targetUrl.size() <= 1000)) &&
+             data.isActive is bool &&
+             data.createdAt is timestamp;
+    }
+
     // -------------------------------------------------------------------------
     // Collections
     // -------------------------------------------------------------------------
@@ -61,6 +68,13 @@ service cloud.firestore {
       allow create: if isAdmin() && isValidMovie(incoming()) && isValidId(movieId);
       allow update: if isAdmin() && isValidMovie(incoming()) && 
                     incoming().createdAt == existing().createdAt;
+      allow delete: if isAdmin();
+    }
+
+    match /ads/{adId} {
+      allow read: if true; // Public can see ads
+      allow create: if isAdmin() && isValidAd(incoming()) && isValidId(adId);
+      allow update: if isAdmin() && isValidAd(incoming());
       allow delete: if isAdmin();
     }
 
