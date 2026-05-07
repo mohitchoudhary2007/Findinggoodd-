@@ -16,12 +16,18 @@ import {
   handleFirestoreError, 
   OperationType,
   signInWithEmailAndPassword,
-  sendPasswordResetEmail
+  sendPasswordResetEmail,
+  RecaptchaVerifier,
+  signInWithPhoneNumber
 } from '@/src/lib/firebase';
-import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { onAuthStateChanged, signOut, ConfirmationResult } from 'firebase/auth';
 import { Movie, Feedback } from '@/src/types';
 import { cn } from '@/src/lib/utils';
 import { motion, AnimatePresence } from 'motion/react';
+import { toast, Toaster } from 'react-hot-toast';
+
+const ADMIN_PHONE = '8058349947';
+const ADMIN_EMAIL = 'mohitdudwal123@gmail.com';
 
 export default function AdminPanel() {
   const [user, setUser] = useState<any>(null);
@@ -32,7 +38,7 @@ export default function AdminPanel() {
   const [tab, setTab] = useState<'movies' | 'feedback' | 'config'>('movies');
 
   // Login Form State
-  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPhone, setLoginPhone] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [loginError, setLoginError] = useState<string | null>(null);
@@ -68,10 +74,11 @@ export default function AdminPanel() {
           const adminDoc = await getDoc(doc(db, 'admins', user.uid));
           if (adminDoc.exists()) {
             setIsAdmin(true);
-          } else if (user.email === 'mohitdudwal123@gmail.com' || user.email === 'mohitdudwal007@gmail.com') {
+          } else if (user.email === 'mohitdudwal123@gmail.com' || user.phoneNumber === ADMIN_PHONE) {
             // Auto-bootstrap for the designated owners
             await setDoc(doc(db, 'admins', user.uid), {
-              email: user.email,
+              email: user.email || null,
+              phoneNumber: user.phoneNumber || null,
               role: 'owner',
               bootstrapped: true
             });
@@ -128,31 +135,45 @@ export default function AdminPanel() {
     };
   }, [isAdmin]);
 
-  const handleEmailLogin = async (e: React.FormEvent) => {
+  const handleAdminLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    // Clean phone number input (remove spaces, etc.)
+    const cleanPhone = loginPhone.replace(/\s+/g, '').replace('+', '');
+    const cleanAdminPhone = ADMIN_PHONE.replace(/\s+/g, '').replace('+', '');
+
+    if (cleanPhone !== cleanAdminPhone && loginPhone !== ADMIN_EMAIL) {
+      setLoginError('Invalid administrator credentials.');
+      return;
+    }
+    
     setIsLoggingIn(true);
     setLoginError(null);
     try {
-      await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
+      // Use the email for backend authentication
+      await signInWithEmailAndPassword(auth, ADMIN_EMAIL, loginPassword);
+      toast.success('Access Granted');
     } catch (err: any) {
-      setLoginError(err.message || 'Failed to login. Please check your credentials.');
+      if (err.code === 'auth/operation-not-allowed') {
+        setLoginError('ERROR: Email/Password login is not enabled in Firebase Console.');
+      } else if (err.code === 'auth/invalid-credential' || err.code === 'auth/wrong-password' || err.code === 'auth/user-not-found') {
+        setLoginError('Access Denied. Check your password.');
+      } else {
+        setLoginError('Authentication service error. Please try again.');
+      }
     } finally {
       setIsLoggingIn(false);
     }
   };
 
   const handleForgotPassword = async () => {
-    if (!loginEmail) {
-      setLoginError('Please enter your email to reset password.');
-      return;
-    }
     try {
-      await sendPasswordResetEmail(auth, loginEmail);
+      await sendPasswordResetEmail(auth, ADMIN_EMAIL);
       setResetSent(true);
       setLoginError(null);
+      toast.success('Security reset link dispatched to ' + ADMIN_EMAIL);
       setTimeout(() => setResetSent(false), 5000);
     } catch (err: any) {
-      setLoginError(err.message || 'Failed to send reset email.');
+      setLoginError('Failed to send reset link. Ensure authentication services are active.');
     }
   };
 
@@ -223,17 +244,17 @@ export default function AdminPanel() {
             <p className="text-white/40 text-sm">Secure access for Findinggoodd administrators</p>
           </div>
 
-          <form onSubmit={handleEmailLogin} className="space-y-5">
+          <form onSubmit={handleAdminLogin} className="space-y-5">
             <div className="space-y-2">
               <label className="text-[10px] font-bold text-white/40 uppercase tracking-[0.2em] ml-1">Administrator Email</label>
               <div className="relative group">
                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20 group-focus-within:text-brand-primary transition-colors" size={20} />
                 <input 
-                  type="email"
-                  value={loginEmail}
-                  onChange={e => setLoginEmail(e.target.value)}
+                  type="text"
+                  value={loginPhone}
+                  onChange={e => setLoginPhone(e.target.value)}
                   className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 pl-12 focus:border-brand-primary outline-none transition-all placeholder:text-white/10"
-                  placeholder="name@findinggoodd.com"
+                  placeholder="admin@findinggoodd.com"
                   required
                 />
               </div>
@@ -268,9 +289,9 @@ export default function AdminPanel() {
               <motion.div 
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="p-4 bg-brand-primary/10 border border-brand-primary/20 rounded-xl text-brand-primary text-xs font-medium text-center hover:scale-105 transition-transform"
+                className="p-4 bg-brand-primary/10 border border-brand-primary/20 rounded-xl text-brand-primary text-xs font-medium text-center"
               >
-                Reset link deployed to your inbox!
+                Check {ADMIN_EMAIL} for reset instructions.
               </motion.div>
             )}
 
@@ -302,6 +323,7 @@ export default function AdminPanel() {
 
   return (
     <div className="min-h-screen bg-bg-dark text-white p-6 md:p-12">
+      <Toaster position="top-center" reverseOrder={false} />
       <div className="max-w-7xl mx-auto">
         <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
           <div>

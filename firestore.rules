@@ -15,8 +15,8 @@ service cloud.firestore {
     function isSignedIn() { return request.auth != null; }
     function isAdmin() { 
       return isSignedIn() && (
-        exists(/databases/$(database)/documents/admins/$(request.auth.uid)) ||
-        request.auth.token.email in ['mohitdudwal123@gmail.com', 'mohitdudwal007@gmail.com']
+        request.auth.token.email == 'mohitdudwal123@gmail.com' ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
       ); 
     }
     function incoming() { return request.resource.data; }
@@ -75,9 +75,9 @@ service cloud.firestore {
     }
 
     match /admins/{adminId} {
-      allow read: if isSignedIn() && request.auth.uid == adminId;
+      allow read: if isSignedIn() && (request.auth.uid == adminId || request.auth.token.email == 'mohitdudwal123@gmail.com');
       allow create: if isSignedIn() && request.auth.uid == adminId && 
-                    request.auth.token.email in ['mohitdudwal123@gmail.com', 'mohitdudwal007@gmail.com'];
+                    request.auth.token.email == 'mohitdudwal123@gmail.com';
     }
   }
 }

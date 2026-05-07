@@ -9,7 +9,9 @@ import {
   GoogleAuthProvider, 
   signInWithPopup,
   signInWithEmailAndPassword,
-  sendPasswordResetEmail
+  sendPasswordResetEmail,
+  RecaptchaVerifier,
+  signInWithPhoneNumber
 } from 'firebase/auth';
 import { getFirestore, doc, getDocFromServer } from 'firebase/firestore';
 import firebaseConfig from '@/firebase-applet-config.json';
@@ -69,4 +71,4 @@ async function testConnection() {
 testConnection();
 
 export const signInWithGoogle = () => signInWithPopup(auth, googleProvider);
-export { signInWithEmailAndPassword, sendPasswordResetEmail };
+export { signInWithEmailAndPassword, sendPasswordResetEmail, RecaptchaVerifier, signInWithPhoneNumber };
