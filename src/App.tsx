@@ -31,6 +31,8 @@ export default function App() {
   const [config, setConfig] = useState<AppConfig | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
   const [secretCounter, setSecretCounter] = useState(0);
   
   // Modals state
@@ -69,6 +71,18 @@ export default function App() {
     return movies.filter(m => m.name.toLowerCase().includes(lower));
   }, [movies, searchQuery]);
 
+  const paginatedMovies = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    return filteredMovies.slice(startIndex, startIndex + itemsPerPage);
+  }, [filteredMovies, currentPage, itemsPerPage]);
+
+  const totalPages = Math.ceil(filteredMovies.length / itemsPerPage);
+
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+    setCurrentPage(1);
+  };
+
   if (isAdminView) {
     return (
       <div className="min-h-screen bg-background">
@@ -86,12 +100,12 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col relative overflow-x-hidden bg-background text-foreground">
+    <div className="min-h-screen flex flex-col relative overflow-x-hidden bg-background text-foreground transform-gpu">
       <ThemeToggle />
       <BackgroundDecoration />
 
-      <header className="pt-12 pb-20 px-6">
-        <nav className="max-w-7xl mx-auto flex justify-between items-center mb-24">
+      <header className="pt-20 pb-32 px-6">
+        <nav className="max-w-7xl mx-auto flex justify-between items-center mb-32">
           <motion.div 
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -106,7 +120,7 @@ export default function App() {
             }}
             className="flex items-center gap-3 group cursor-pointer"
           >
-            <div className="w-12 h-12 bg-gradient-to-br from-brand-primary to-brand-secondary rounded-2xl flex items-center justify-center shadow-lg shadow-brand-primary/30 group-hover:rotate-12 transition-transform animate-pulse">
+            <div className="w-12 h-12 bg-gradient-to-br from-brand-primary to-brand-secondary rounded-2xl flex items-center justify-center shadow-lg shadow-brand-primary/30 group-hover:rotate-12 transition-transform animate-pulse will-change-transform transform-gpu">
               <Film className="text-white" size={24} />
             </div>
             <div className="relative overflow-hidden px-2 py-1">
@@ -131,9 +145,9 @@ export default function App() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="text-center mb-16 px-4"
+          className="text-center mb-24 px-4"
         >
-          <h2 className="text-5xl md:text-8xl font-black font-display mb-8 tracking-tighter leading-[0.9] drop-shadow-2xl">
+          <h2 className="text-5xl md:text-8xl font-black font-display mb-8 tracking-tighter leading-[0.9] drop-shadow-2xl will-change-transform transform-gpu">
             DISCOVER YOUR <br className="hidden md:block" />
             <span className="bg-gradient-to-r from-brand-primary via-brand-secondary to-brand-primary bg-[length:200%_auto] animate-gradient-x bg-clip-text text-transparent">NEXT STORY</span>
           </h2>
@@ -143,30 +157,77 @@ export default function App() {
           </p>
         </motion.div>
 
-        <SearchBar onSearch={setSearchQuery} />
+        <SearchBar onSearch={handleSearch} />
       </header>
 
       <TrendingBanner trendingTitles={config?.trendingMovies || []} />
 
-      <main className="flex-1 max-w-7xl mx-auto w-full px-6 mb-24">
+      <main className="flex-1 max-w-7xl mx-auto w-full px-6 mb-40">
         {isLoading ? (
           <div className="py-20 flex flex-col items-center justify-center gap-4 opacity-50">
             <Loader2 className="animate-spin" size={48} />
             <p className="font-display font-medium tracking-widest uppercase text-xs">Synchronizing Database</p>
           </div>
-        ) : filteredMovies.length > 0 ? (
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-8">
-            <AnimatePresence mode="popLayout">
-              {filteredMovies.map((movie) => (
-                <MovieCard 
-                  key={movie.id} 
-                  movie={movie} 
-                  onWatchTrailer={setTrailerUrl}
-                  onDownload={(name, url) => setDownloadInfo({ name, url })}
-                />
-              ))}
-            </AnimatePresence>
-          </div>
+        ) : paginatedMovies.length > 0 ? (
+          <>
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-8">
+              <AnimatePresence mode="popLayout">
+                {paginatedMovies.map((movie) => (
+                  <MovieCard 
+                    key={movie.id} 
+                    movie={movie} 
+                    onWatchTrailer={setTrailerUrl}
+                    onDownload={(name, url) => setDownloadInfo({ name, url })}
+                  />
+                ))}
+              </AnimatePresence>
+            </div>
+
+            {totalPages > 1 && (
+              <div className="mt-20 flex justify-center items-center gap-2">
+                <button
+                  disabled={currentPage === 1}
+                  onClick={() => {
+                    setCurrentPage(prev => Math.max(1, prev - 1));
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  className="px-6 py-3 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 disabled:opacity-20 disabled:cursor-not-allowed transition-all font-bold text-xs uppercase tracking-widest"
+                >
+                  Prev
+                </button>
+                
+                <div className="flex flex-wrap justify-center gap-1 max-w-[200px] sm:max-w-none">
+                  {[...Array(totalPages)].map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => {
+                        setCurrentPage(i + 1);
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }}
+                      className={`w-10 h-10 rounded-xl font-bold text-xs transition-all ${
+                        currentPage === i + 1 
+                          ? 'bg-brand-primary text-white shadow-lg shadow-brand-primary/30' 
+                          : 'bg-white/5 text-white/40 hover:bg-white/10'
+                      }`}
+                    >
+                      {i + 1}
+                    </button>
+                  ))}
+                </div>
+
+                <button
+                  disabled={currentPage === totalPages}
+                  onClick={() => {
+                    setCurrentPage(prev => Math.min(totalPages, prev + 1));
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  className="px-6 py-3 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 disabled:opacity-20 disabled:cursor-not-allowed transition-all font-bold text-xs uppercase tracking-widest"
+                >
+                  Next
+                </button>
+              </div>
+            )}
+          </>
         ) : (
           <div className="py-20 text-center">
             <p className="text-2xl font-bold font-display text-white/20">No movies found matching "{searchQuery}"</p>

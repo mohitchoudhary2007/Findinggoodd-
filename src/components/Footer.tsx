@@ -36,7 +36,7 @@ export default function Footer({ onLegalClick, config }: FooterProps) {
   };
 
   return (
-    <footer className="mt-32 bg-surface/20 py-12 px-6 relative overflow-hidden">
+    <footer className="mt-60 bg-surface/20 py-24 px-6 relative overflow-hidden">
       {/* Background Lighting Effect */}
       <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-brand-primary/5 blur-[100px] rounded-full pointer-events-none -mr-32 -mt-32" />
       <div className="absolute bottom-0 left-0 w-[200px] h-[200px] bg-brand-secondary/5 blur-[80px] rounded-full pointer-events-none -ml-20 -mb-20" />

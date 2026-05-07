@@ -21,13 +21,27 @@ export default function MovieCard({ movie, onWatchTrailer, onDownload }: MovieCa
         scale: 1.02,
         transition: { duration: 0.3, ease: "easeOut" }
       }}
-      className="group relative aspect-[2/3] rounded-2xl overflow-hidden glass-panel hover:shadow-2xl hover:shadow-brand-primary/20 transition-shadow duration-300"
+      className="group relative aspect-[2/3] rounded-2xl overflow-hidden glass-panel hover:shadow-2xl hover:shadow-brand-primary/20 transition-all duration-300 will-change-transform transform-gpu"
     >
       <img
         src={movie.posterUrl}
         alt={movie.name}
         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
         referrerPolicy="no-referrer"
+      />
+
+      {/* Shimmer Effect */}
+      <motion.div 
+        animate={{
+          left: ['-100%', '200%'],
+        }}
+        transition={{
+          duration: 3,
+          repeat: Infinity,
+          ease: "easeInOut",
+          repeatDelay: Math.random() * 5 + 5
+        }}
+        className="absolute inset-y-0 w-32 bg-gradient-to-r from-transparent via-white/[0.05] to-transparent skew-x-[-20deg] pointer-events-none will-change-[left] transform-gpu"
       />
       
       <div className="absolute inset-0 movie-card-gradient opacity-80 group-hover:opacity-100 transition-opacity" />
