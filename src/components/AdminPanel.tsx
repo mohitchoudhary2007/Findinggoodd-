@@ -447,28 +447,28 @@ export default function AdminPanel() {
         <div className="flex gap-4 mb-12 overflow-x-auto scrollbar-hide pb-4">
           <button 
             onClick={() => setTab('movies')}
-            className={cn("flex items-center gap-3 px-8 py-4 rounded-2xl font-bold transition-all duration-300 whitespace-nowrap", tab === 'movies' ? "bg-gradient-to-r from-brand-primary to-brand-secondary text-white shadow-[0_0_20px_rgba(255,61,0,0.3)] scale-105" : "bg-white/5 text-white/50 hover:bg-white/10 hover:text-white")}
+            className={cn("flex items-center gap-3 px-8 py-4 rounded-2xl font-bold transition-all duration-300 whitespace-nowrap", tab === 'movies' ? "bg-gradient-to-r from-brand-primary to-brand-secondary text-white shadow-[0_0_20px_rgba(255,61,0,0.3)] scale-105" : "bg-foreground/5 text-foreground/50 hover:bg-foreground/10 hover:text-foreground")}
           >
             <Film size={20} className={tab === 'movies' ? "animate-pulse" : ""} />
             Manage Movies
           </button>
           <button 
             onClick={() => setTab('ads')}
-            className={cn("flex items-center gap-3 px-8 py-4 rounded-2xl font-bold transition-all duration-300 whitespace-nowrap", tab === 'ads' ? "bg-gradient-to-r from-brand-primary to-brand-secondary text-white shadow-[0_0_20px_rgba(255,61,0,0.3)] scale-105" : "bg-white/5 text-white/50 hover:bg-white/10 hover:text-white")}
+            className={cn("flex items-center gap-3 px-8 py-4 rounded-2xl font-bold transition-all duration-300 whitespace-nowrap", tab === 'ads' ? "bg-gradient-to-r from-brand-primary to-brand-secondary text-white shadow-[0_0_20px_rgba(255,61,0,0.3)] scale-105" : "bg-foreground/5 text-foreground/50 hover:bg-foreground/10 hover:text-foreground")}
           >
             <Monitor size={20} className={tab === 'ads' ? "animate-pulse" : ""} />
             Manage Ads
           </button>
           <button 
             onClick={() => setTab('config')}
-            className={cn("flex items-center gap-3 px-8 py-4 rounded-2xl font-bold transition-all duration-300 whitespace-nowrap", tab === 'config' ? "bg-gradient-to-r from-brand-primary to-brand-secondary text-white shadow-[0_0_20px_rgba(255,61,0,0.3)] scale-105" : "bg-white/5 text-white/50 hover:bg-white/10 hover:text-white")}
+            className={cn("flex items-center gap-3 px-8 py-4 rounded-2xl font-bold transition-all duration-300 whitespace-nowrap", tab === 'config' ? "bg-gradient-to-r from-brand-primary to-brand-secondary text-white shadow-[0_0_20px_rgba(255,61,0,0.3)] scale-105" : "bg-foreground/5 text-foreground/50 hover:bg-foreground/10 hover:text-foreground")}
           >
             <List size={20} className={tab === 'config' ? "animate-pulse" : ""} />
             Global Settings
           </button>
           <button 
             onClick={() => setTab('feedback')}
-            className={cn("flex items-center gap-3 px-8 py-4 rounded-2xl font-bold transition-all duration-300 whitespace-nowrap relative", tab === 'feedback' ? "bg-gradient-to-r from-brand-primary to-brand-secondary text-white shadow-[0_0_20px_rgba(255,61,0,0.3)] scale-105" : "bg-white/5 text-white/50 hover:bg-white/10 hover:text-white")}
+            className={cn("flex items-center gap-3 px-8 py-4 rounded-2xl font-bold transition-all duration-300 whitespace-nowrap relative", tab === 'feedback' ? "bg-gradient-to-r from-brand-primary to-brand-secondary text-white shadow-[0_0_20px_rgba(255,61,0,0.3)] scale-105" : "bg-foreground/5 text-foreground/50 hover:bg-foreground/10 hover:text-foreground")}
           >
             <MessageSquare size={20} className={tab === 'feedback' ? "animate-bounce" : ""} />
             User Feedback
@@ -492,52 +492,52 @@ export default function AdminPanel() {
                   </h2>
                   <div className="space-y-5 relative z-10">
                     <div className="space-y-2">
-                      <label className="text-xs font-bold text-white/40 uppercase tracking-widest pl-1">Title Name</label>
+                      <label className="text-xs font-bold text-foreground/40 uppercase tracking-widest pl-1">Title Name</label>
                       <input 
                         value={formData.name}
                         onChange={e => setFormData({...formData, name: e.target.value})}
-                        className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-brand-primary outline-none transition-all"
+                        className="w-full bg-foreground/5 border border-border rounded-xl p-4 focus:border-brand-primary outline-none transition-all"
                         placeholder="e.g. Inception"
                         required
                       />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-xs font-bold text-white/40 uppercase tracking-widest pl-1 flex items-center gap-2">
+                      <label className="text-xs font-bold text-foreground/40 uppercase tracking-widest pl-1 flex items-center gap-2">
                         <ImageIcon size={14} /> Poster URL
                       </label>
                       <input 
                         value={formData.posterUrl}
                         onChange={e => setFormData({...formData, posterUrl: e.target.value})}
-                        className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-brand-primary outline-none transition-all"
+                        className="w-full bg-foreground/5 border border-border rounded-xl p-4 focus:border-brand-primary outline-none transition-all"
                         placeholder="https://..."
                         required
                       />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-xs font-bold text-white/40 uppercase tracking-widest pl-1 flex items-center gap-2">
+                      <label className="text-xs font-bold text-foreground/40 uppercase tracking-widest pl-1 flex items-center gap-2">
                         <LinkIcon size={14} /> Download URL
                       </label>
                       <input 
                         value={formData.downloadUrl}
                         onChange={e => setFormData({...formData, downloadUrl: e.target.value})}
-                        className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-brand-primary outline-none transition-all"
+                        className="w-full bg-foreground/5 border border-border rounded-xl p-4 focus:border-brand-primary outline-none transition-all"
                         placeholder="https://..."
                         required
                       />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-xs font-bold text-white/40 uppercase tracking-widest pl-1 flex items-center gap-2">
+                      <label className="text-xs font-bold text-foreground/40 uppercase tracking-widest pl-1 flex items-center gap-2">
                         <Film size={14} /> Trailer URL
                       </label>
                       <input 
                         value={formData.trailerUrl}
                         onChange={e => setFormData({...formData, trailerUrl: e.target.value})}
-                        className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-brand-primary outline-none transition-all"
+                        className="w-full bg-foreground/5 border border-border rounded-xl p-4 focus:border-brand-primary outline-none transition-all"
                         placeholder="https://youtube.com/..."
                         required
                       />
                     </div>
-                    <label className="flex items-center gap-3 cursor-pointer group p-4 bg-white/5 rounded-xl border border-white/5 hover:border-brand-primary transition-all">
+                    <label className="flex items-center gap-3 cursor-pointer group p-4 bg-foreground/5 rounded-xl border border-border hover:border-brand-primary transition-all">
                       <input 
                         type="checkbox"
                         checked={formData.isTrending}
@@ -633,7 +633,7 @@ export default function AdminPanel() {
                     value={trendingInput}
                     onChange={e => setTrendingInput(e.target.value)}
                     onKeyDown={e => e.key === 'Enter' && (setTrendingList([...trendingList, trendingInput]), setTrendingInput(''))}
-                    className="flex-1 bg-white/5 border border-white/10 rounded-xl p-4 focus:border-brand-primary outline-none transition-all"
+                    className="flex-1 bg-foreground/5 border border-border rounded-xl p-4 focus:border-brand-primary outline-none transition-all"
                     placeholder="Add movie to trending bar..."
                   />
                   <button 
@@ -659,12 +659,12 @@ export default function AdminPanel() {
                         animate={{ scale: 1, opacity: 1, y: 0 }}
                         exit={{ scale: 0.8, opacity: 0 }}
                         transition={{ delay: i * 0.05 }}
-                        className="bg-white/10 px-4 py-2 rounded-xl flex items-center gap-3 border border-white/5 hover:bg-white/20 hover:border-brand-primary/50 transition-all duration-300 group"
+                        className="bg-foreground/5 px-4 py-2 rounded-xl flex items-center gap-3 border border-border hover:bg-foreground/10 hover:border-brand-primary/50 transition-all duration-300 group"
                       >
                         <span className="font-medium group-hover:text-glow-effect transition-all">{item}</span>
                         <button 
                           onClick={() => setTrendingList(trendingList.filter((_, idx) => idx !== i))}
-                          className="text-white/20 hover:text-red-500 transition-colors duration-300"
+                          className="text-foreground/20 hover:text-red-500 transition-colors duration-300"
                         >
                           <X size={14} />
                         </button>
@@ -681,111 +681,111 @@ export default function AdminPanel() {
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <label className="text-xs font-bold text-white/40 uppercase tracking-widest pl-1">Website Name</label>
+                      <label className="text-xs font-bold text-foreground/40 uppercase tracking-widest pl-1">Website Name</label>
                       <input 
                         value={siteName}
                         onChange={e => setSiteName(e.target.value)}
-                        className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-brand-primary outline-none transition-all"
+                        className="w-full bg-foreground/5 border border-border rounded-xl p-4 focus:border-brand-primary outline-none transition-all"
                         placeholder="e.g. Findinggoodd"
                       />
                     </div>
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <label className="text-xs font-bold text-white/40 uppercase tracking-widest pl-1">Trailer Ad (sec)</label>
+                        <label className="text-xs font-bold text-foreground/40 uppercase tracking-widest pl-1">Trailer Ad (sec)</label>
                         <input 
                           type="number"
                           min="5"
                           max="30"
                           value={trailerAdDuration}
                           onChange={e => setTrailerAdDuration(parseInt(e.target.value) || 5)}
-                          className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-brand-primary outline-none transition-all text-center"
+                          className="w-full bg-foreground/5 border border-border rounded-xl p-4 focus:border-brand-primary outline-none transition-all text-center"
                         />
                       </div>
                       <div className="space-y-2">
-                        <label className="text-xs font-bold text-white/40 uppercase tracking-widest pl-1">Download Ad (sec)</label>
+                        <label className="text-xs font-bold text-foreground/40 uppercase tracking-widest pl-1">Download Ad (sec)</label>
                         <input 
                           type="number"
                           min="5"
                           max="30"
                           value={downloadAdDuration}
                           onChange={e => setDownloadAdDuration(parseInt(e.target.value) || 10)}
-                          className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-brand-primary outline-none transition-all text-center"
+                          className="w-full bg-foreground/5 border border-border rounded-xl p-4 focus:border-brand-primary outline-none transition-all text-center"
                         />
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <div className="pt-8 border-t border-white/5 space-y-8">
+                <div className="pt-8 border-t border-border space-y-8">
                   <div>
                     <h2 className="text-2xl font-bold font-display mb-2">Legal Sections</h2>
-                    <p className="text-white/40">Edit the privacy policy and terms shown to users.</p>
+                    <p className="text-foreground/40">Edit the privacy policy and terms shown to users.</p>
                   </div>
                   
                   <div className="grid grid-cols-1 gap-6">
                     <div className="space-y-2">
-                      <label className="text-xs font-bold text-white/40 uppercase tracking-widest pl-1">Privacy Policy</label>
+                      <label className="text-xs font-bold text-foreground/40 uppercase tracking-widest pl-1">Privacy Policy</label>
                       <textarea 
                         value={privacyPolicy}
                         onChange={e => setPrivacyPolicy(e.target.value)}
                         rows={10}
-                        className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-brand-primary outline-none transition-all resize-none font-mono text-sm"
+                        className="w-full bg-foreground/5 border border-border rounded-xl p-4 focus:border-brand-primary outline-none transition-all resize-none font-mono text-sm text-foreground"
                         placeholder="Enter privacy policy text here..."
                       />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-xs font-bold text-white/40 uppercase tracking-widest pl-1">Terms of Service</label>
+                      <label className="text-xs font-bold text-foreground/40 uppercase tracking-widest pl-1">Terms of Service</label>
                       <textarea 
                         value={termsOfService}
                         onChange={e => setTermsOfService(e.target.value)}
                         rows={10}
-                        className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-brand-primary outline-none transition-all resize-none font-mono text-sm"
+                        className="w-full bg-foreground/5 border border-border rounded-xl p-4 focus:border-brand-primary outline-none transition-all resize-none font-mono text-sm text-foreground"
                         placeholder="Enter terms of service text here..."
                       />
                     </div>
                   </div>
                 </div>
 
-                <div className="pt-8 border-t border-white/5 space-y-8">
+                <div className="pt-8 border-t border-border space-y-8">
                   <div>
                     <h2 className="text-2xl font-bold font-display mb-2">Social Media Presence</h2>
-                    <p className="text-white/40">Update the links shown in the website footer.</p>
+                    <p className="text-foreground/40">Update the links shown in the website footer.</p>
                   </div>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <label className="text-xs font-bold text-white/40 uppercase tracking-widest pl-1">Instagram URL</label>
+                      <label className="text-xs font-bold text-foreground/40 uppercase tracking-widest pl-1">Instagram URL</label>
                       <input 
                         value={socialLinks.instagram}
                         onChange={e => setSocialLinks({...socialLinks, instagram: e.target.value})}
-                        className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-brand-primary outline-none transition-all"
+                        className="w-full bg-foreground/5 border border-border rounded-xl p-4 focus:border-brand-primary outline-none transition-all"
                         placeholder="https://instagram.com/..."
                       />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-xs font-bold text-white/40 uppercase tracking-widest pl-1">Twitter URL</label>
+                      <label className="text-xs font-bold text-foreground/40 uppercase tracking-widest pl-1">Twitter URL</label>
                       <input 
                         value={socialLinks.twitter}
                         onChange={e => setSocialLinks({...socialLinks, twitter: e.target.value})}
-                        className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-brand-primary outline-none transition-all"
+                        className="w-full bg-foreground/5 border border-border rounded-xl p-4 focus:border-brand-primary outline-none transition-all"
                         placeholder="https://twitter.com/..."
                       />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-xs font-bold text-white/40 uppercase tracking-widest pl-1">Facebook URL</label>
+                      <label className="text-xs font-bold text-foreground/40 uppercase tracking-widest pl-1">Facebook URL</label>
                       <input 
                         value={socialLinks.facebook}
                         onChange={e => setSocialLinks({...socialLinks, facebook: e.target.value})}
-                        className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-brand-primary outline-none transition-all"
+                        className="w-full bg-foreground/5 border border-border rounded-xl p-4 focus:border-brand-primary outline-none transition-all"
                         placeholder="https://facebook.com/..."
                       />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-xs font-bold text-white/40 uppercase tracking-widest pl-1">Contact Email</label>
+                      <label className="text-xs font-bold text-foreground/40 uppercase tracking-widest pl-1">Contact Email</label>
                       <input 
                         value={socialLinks.mail}
                         onChange={e => setSocialLinks({...socialLinks, mail: e.target.value})}
-                        className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-brand-primary outline-none transition-all"
+                        className="w-full bg-foreground/5 border border-border rounded-xl p-4 focus:border-brand-primary outline-none transition-all"
                         placeholder="contact@findinggoodd.com"
                       />
                     </div>

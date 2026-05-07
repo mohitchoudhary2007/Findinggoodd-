@@ -136,7 +136,7 @@ export default function App() {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             onClick={() => setIsFeedbackOpen(true)}
-            className="px-6 py-3 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all flex items-center gap-2 group"
+            className="px-6 py-3 rounded-2xl bg-foreground/5 border border-border hover:bg-foreground/10 transition-all flex items-center gap-2 group"
           >
             <MessageCircle size={18} className="text-brand-primary group-hover:scale-125 transition-transform" />
             <span className="font-bold text-sm tracking-wide">Request Movie</span>
@@ -203,7 +203,7 @@ export default function App() {
                     setCurrentPage(prev => Math.max(1, prev - 1));
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
-                  className="px-6 py-3 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 disabled:opacity-20 disabled:cursor-not-allowed transition-all font-bold text-xs uppercase tracking-widest"
+                  className="px-6 py-3 rounded-2xl bg-foreground/5 border border-border hover:bg-foreground/10 disabled:opacity-20 disabled:cursor-not-allowed transition-all font-bold text-xs uppercase tracking-widest"
                 >
                   Prev
                 </button>
@@ -219,7 +219,7 @@ export default function App() {
                       className={`w-10 h-10 rounded-xl font-bold text-xs transition-all ${
                         currentPage === i + 1 
                           ? 'bg-brand-primary text-white shadow-lg shadow-brand-primary/30' 
-                          : 'bg-white/5 text-white/40 hover:bg-white/10'
+                          : 'bg-foreground/5 text-foreground/40 hover:bg-foreground/10'
                       }`}
                     >
                       {i + 1}
@@ -233,7 +233,7 @@ export default function App() {
                     setCurrentPage(prev => Math.min(totalPages, prev + 1));
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
-                  className="px-6 py-3 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 disabled:opacity-20 disabled:cursor-not-allowed transition-all font-bold text-xs uppercase tracking-widest"
+                  className="px-6 py-3 rounded-2xl bg-foreground/5 border border-border hover:bg-foreground/10 disabled:opacity-20 disabled:cursor-not-allowed transition-all font-bold text-xs uppercase tracking-widest"
                 >
                   Next
                 </button>
@@ -242,7 +242,7 @@ export default function App() {
           </>
         ) : (
           <div className="py-20 text-center">
-            <p className="text-2xl font-bold font-display text-white/20">No movies found matching "{searchQuery}"</p>
+            <p className="text-2xl font-bold font-display text-foreground/20">No movies found matching "{searchQuery}"</p>
           </div>
         )}
       </main>

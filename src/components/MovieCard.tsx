@@ -38,7 +38,7 @@ export default function MovieCard({ movie, onWatchTrailer, onDownload }: MovieCa
       <div className="absolute inset-0 movie-card-gradient opacity-80 group-hover:opacity-100 transition-opacity" />
       
       <div className="absolute inset-0 p-3 md:p-5 flex flex-col justify-end transform translate-y-0 md:translate-y-6 md:group-hover:translate-y-0 transition-transform duration-500 ease-out z-10">
-        <h3 className="text-sm md:text-xl font-bold font-display mb-2 md:mb-3 drop-shadow-lg leading-tight line-clamp-2 md:group-hover:text-glow-effect transition-all duration-300 transform group-hover:scale-105 origin-left">{movie.name}</h3>
+        <h3 className="text-sm md:text-xl font-bold font-display mb-2 md:mb-3 drop-shadow-lg leading-tight line-clamp-2 md:group-hover:text-glow-effect transition-all duration-300 transform group-hover:scale-105 origin-left text-white">{movie.name}</h3>
         
         <div className="grid grid-cols-1 gap-2 md:grid-cols-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-500 delay-100">
           <button

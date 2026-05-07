@@ -10,19 +10,19 @@ export default function TrendingBanner({ trendingTitles }: TrendingBannerProps) 
 
   return (
     <div className="max-w-7xl mx-auto px-4 md:px-6 mb-8 md:mb-16">
-      <div className="relative group overflow-hidden rounded-2xl bg-white/[0.03] border border-white/10 glass-panel shadow-xl shadow-brand-primary/5">
+      <div className="relative group overflow-hidden rounded-2xl glass-panel border border-border shadow-xl shadow-brand-primary/5 transition-colors duration-500">
         {/* Animated Light Sweep Effect */}
         <div 
-          className="absolute top-0 bottom-0 w-48 bg-gradient-to-r from-transparent via-white/[0.15] to-transparent pointer-events-none animate-sweep-slow"
+          className="absolute top-0 bottom-0 w-48 bg-gradient-to-r from-transparent via-brand-primary/10 to-transparent pointer-events-none animate-sweep-slow"
         />
 
         <div className="relative z-10 flex items-center h-10">
-          <div className="flex items-center gap-2 px-5 border-r border-white/10 shrink-0 bg-white/[0.05] h-full">
+          <div className="flex items-center gap-2 px-5 border-r border-border shrink-0 bg-brand-primary/5 h-full">
             <div className="relative">
               <div className="w-2 h-2 rounded-full bg-brand-primary animate-ping absolute inset-0 opacity-75" />
               <div className="w-2 h-2 rounded-full bg-brand-primary relative shadow-[0_0_10px_rgba(255,61,0,0.5)]" />
             </div>
-            <span className="text-[10px] font-black text-white uppercase tracking-tighter drop-shadow-md">
+            <span className="text-[10px] font-black text-foreground uppercase tracking-tighter drop-shadow-sm">
               Trending
             </span>
           </div>
@@ -34,16 +34,16 @@ export default function TrendingBanner({ trendingTitles }: TrendingBannerProps) 
                   <motion.div
                     key={i}
                     animate={{
-                      opacity: [0.5, 1, 0.5]
+                      opacity: [0.6, 1, 0.6]
                     }}
                     transition={{
                       duration: 4,
                       repeat: Infinity,
                       delay: i * 0.2
                     }}
-                    className="text-[10px] font-bold text-white uppercase tracking-wide flex items-center gap-6 will-change-opacity"
+                    className="text-[10px] font-bold text-foreground/80 uppercase tracking-wide flex items-center gap-6 will-change-opacity"
                   >
-                    <span>{title}</span>
+                    <span className="hover:text-brand-primary transition-colors">{title}</span>
                     <span className="w-0.5 h-0.5 rounded-full bg-brand-primary" />
                   </motion.div>
                 ))}
