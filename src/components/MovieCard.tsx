@@ -16,7 +16,12 @@ export default function MovieCard({ movie, onWatchTrailer, onDownload }: MovieCa
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.9 }}
-      className="group relative aspect-[2/3] rounded-2xl overflow-hidden glass-panel"
+      whileHover={{ 
+        y: -8,
+        scale: 1.02,
+        transition: { duration: 0.3, ease: "easeOut" }
+      }}
+      className="group relative aspect-[2/3] rounded-2xl overflow-hidden glass-panel hover:shadow-2xl hover:shadow-brand-primary/20 transition-shadow duration-300"
     >
       <img
         src={movie.posterUrl}
