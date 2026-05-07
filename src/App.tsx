@@ -109,7 +109,7 @@ export default function App() {
             </div>
             <div className="relative overflow-hidden px-2 py-1">
               <h1 className="text-3xl font-black font-display tracking-tightest select-none bg-clip-text text-transparent bg-gradient-to-r from-white via-brand-primary to-white bg-[length:200%_auto] animate-shine">
-                {config?.siteName || 'Findinggoodd'}<span className="text-brand-primary">.</span>
+                {config?.siteName || 'Findinggoodd'}
               </h1>
             </div>
           </motion.div>

@@ -20,7 +20,7 @@ export default function Footer({ onLegalClick, config }: FooterProps) {
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
         <div className="flex flex-col items-center md:items-start gap-4">
           <h2 className="text-2xl font-bold font-display tracking-tightest">
-            {config?.siteName || 'Findinggoodd'}<span className="text-brand-primary">.</span>
+            {config?.siteName || 'Findinggoodd'}
           </h2>
           <p className="text-white/40 text-sm max-w-xs text-center md:text-left">
             The ultimate destination for discovery. High speed, premium quality.
