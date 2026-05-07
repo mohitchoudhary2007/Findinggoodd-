@@ -1,0 +1,83 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // -------------------------------------------------------------------------
+    // Global Safety Net
+    // -------------------------------------------------------------------------
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // -------------------------------------------------------------------------
+    // Primitives & Helpers
+    // -------------------------------------------------------------------------
+    function isSignedIn() { return request.auth != null; }
+    function isAdmin() { 
+      return isSignedIn() && (
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid)) ||
+        request.auth.token.email in ['mohitdudwal123@gmail.com', 'mohitdudwal007@gmail.com']
+      ); 
+    }
+    function incoming() { return request.resource.data; }
+    function existing() { return resource.data; }
+    
+    function isValidId(id) { 
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); 
+    }
+
+    // -------------------------------------------------------------------------
+    // Entity Validations
+    // -------------------------------------------------------------------------
+    
+    function isValidMovie(data) {
+      return data.name is string && data.name.size() > 0 && data.name.size() <= 200 &&
+             data.posterUrl is string && data.posterUrl.size() <= 1000 &&
+             data.downloadUrl is string && data.downloadUrl.size() <= 2000 &&
+             data.trailerUrl is string && data.trailerUrl.size() <= 1000 &&
+             data.isTrending is bool &&
+             data.createdAt is timestamp;
+    }
+
+    function isValidFeedback(data) {
+      return data.name is string && data.name.size() > 0 && data.name.size() <= 100 &&
+             data.email is string && data.email.size() <= 255 &&
+             data.message is string && data.message.size() > 0 && data.message.size() <= 2000 &&
+             data.type in ['feedback', 'request'] &&
+             data.createdAt == request.time;
+    }
+
+    function isValidConfig(data) {
+      return data.trendingMovies is list && data.trendingMovies.size() <= 20 &&
+             data.updatedAt == request.time;
+    }
+
+    // -------------------------------------------------------------------------
+    // Collections
+    // -------------------------------------------------------------------------
+
+    match /movies/{movieId} {
+      allow read: if true; // Public access
+      allow create: if isAdmin() && isValidMovie(incoming()) && isValidId(movieId);
+      allow update: if isAdmin() && isValidMovie(incoming()) && 
+                    incoming().createdAt == existing().createdAt;
+      allow delete: if isAdmin();
+    }
+
+    match /feedback/{feedbackId} {
+      allow read: if isAdmin(); // Only admins can see feedback
+      allow create: if isValidFeedback(incoming()) && isValidId(feedbackId);
+    }
+
+    match /config/{configId} {
+      allow read: if true; // Public access to trending names etc.
+      allow write: if isAdmin() && isValidConfig(incoming()) && isValidId(configId);
+    }
+
+    match /admins/{adminId} {
+      allow read: if isSignedIn() && request.auth.uid == adminId;
+      allow create: if isSignedIn() && request.auth.uid == adminId && 
+                    request.auth.token.email in ['mohitdudwal123@gmail.com', 'mohitdudwal007@gmail.com'];
+    }
+  }
+}

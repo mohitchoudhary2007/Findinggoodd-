@@ -1,0 +1,74 @@
+{
+  "entities": {
+    "Movie": {
+      "title": "Movie",
+      "description": "Represents a movie entry with download and trailer links.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "posterUrl": { "type": "string", "format": "uri" },
+        "downloadUrl": { "type": "string", "format": "uri" },
+        "trailerUrl": { "type": "string", "format": "uri" },
+        "isTrending": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "posterUrl", "downloadUrl", "trailerUrl"]
+    },
+    "Feedback": {
+      "title": "Feedback",
+      "description": "User feedback and movie requests.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "message": { "type": "string" },
+        "type": { "type": "string", "enum": ["feedback", "request"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "email", "message", "type"]
+    },
+    "AppConfig": {
+      "title": "AppConfig",
+      "description": "Global application configuration.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "trendingMovies": { "type": "array", "items": { "type": "string" } },
+        "siteName": { "type": "string" },
+        "privacyPolicy": { "type": "string" },
+        "termsOfService": { "type": "string" },
+        "socialLinks": {
+          "type": "object",
+          "properties": {
+            "instagram": { "type": "string" },
+            "twitter": { "type": "string" },
+            "facebook": { "type": "string" },
+            "mail": { "type": "string" }
+          }
+        },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      }
+    }
+  },
+  "firestore": {
+    "/movies/{movieId}": {
+      "schema": "Movie",
+      "description": "Detailed movie data."
+    },
+    "/feedback/{feedbackId}": {
+      "schema": "Feedback",
+      "description": "User submissions."
+    },
+    "/config/{configId}": {
+      "schema": "AppConfig",
+      "description": "Global settings."
+    },
+    "/admins/{adminId}": {
+      "schema": { "type": "object", "properties": { "email": { "type": "string" } } },
+      "description": "Authorized administrators."
+    }
+  }
+}
