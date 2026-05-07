@@ -2,13 +2,22 @@ import React, { useState, useEffect } from 'react';
 import { 
   Plus, Settings, LogOut, Trash2, Edit3, Save, 
   CheckCircle, Loader2, MessageSquare, List,
-  Image as ImageIcon, Link as LinkIcon, Film, X
+  Image as ImageIcon, Link as LinkIcon, Film, X,
+  Mail, Lock, Key
 } from 'lucide-react';
 import { 
   collection, onSnapshot, query, orderBy, 
   addDoc, deleteDoc, doc, updateDoc, serverTimestamp, setDoc, getDoc 
 } from 'firebase/firestore';
-import { db, auth, signInWithGoogle, handleFirestoreError, OperationType } from '@/src/lib/firebase';
+import { 
+  db, 
+  auth, 
+  signInWithGoogle, 
+  handleFirestoreError, 
+  OperationType,
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail
+} from '@/src/lib/firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { Movie, Feedback } from '@/src/types';
 import { cn } from '@/src/lib/utils';
@@ -21,6 +30,13 @@ export default function AdminPanel() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [feedback, setFeedback] = useState<Feedback[]>([]);
   const [tab, setTab] = useState<'movies' | 'feedback' | 'config'>('movies');
+
+  // Login Form State
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [loginError, setLoginError] = useState<string | null>(null);
+  const [resetSent, setResetSent] = useState(false);
 
   // Form State
   const [isEditing, setIsEditing] = useState<string | null>(null);
@@ -112,6 +128,34 @@ export default function AdminPanel() {
     };
   }, [isAdmin]);
 
+  const handleEmailLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoggingIn(true);
+    setLoginError(null);
+    try {
+      await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
+    } catch (err: any) {
+      setLoginError(err.message || 'Failed to login. Please check your credentials.');
+    } finally {
+      setIsLoggingIn(false);
+    }
+  };
+
+  const handleForgotPassword = async () => {
+    if (!loginEmail) {
+      setLoginError('Please enter your email to reset password.');
+      return;
+    }
+    try {
+      await sendPasswordResetEmail(auth, loginEmail);
+      setResetSent(true);
+      setLoginError(null);
+      setTimeout(() => setResetSent(false), 5000);
+    } catch (err: any) {
+      setLoginError(err.message || 'Failed to send reset email.');
+    }
+  };
+
   const handleSaveMovie = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -163,19 +207,95 @@ export default function AdminPanel() {
 
   if (!user || !isAdmin) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center">
-        <div className="w-20 h-20 bg-brand-primary/10 rounded-3xl flex items-center justify-center mb-8">
-          <Settings className="text-brand-primary" size={40} />
-        </div>
-        <h1 className="text-4xl font-bold font-display mb-4">Admin Dashboard</h1>
-        <p className="text-white/40 mb-12 max-w-md">Secure access only. Please sign in with an authorized administrator account to manage Findinggoodd.</p>
-        <button 
-          onClick={signInWithGoogle}
-          className="bg-white text-black font-bold py-4 px-12 rounded-2xl flex items-center gap-3 hover:scale-105 transition-transform"
+      <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-gradient-to-b from-bg-dark to-black">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="w-full max-w-md glass-panel p-10 rounded-[2.5rem] border border-white/10 shadow-2xl relative overflow-hidden"
         >
-          <img src="https://www.google.com/favicon.ico" className="w-5" alt="G" />
-          Sign in for Admin Panel
-        </button>
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-primary/0 via-brand-primary to-brand-primary/0" />
+          
+          <div className="flex flex-col items-center text-center mb-10">
+            <div className="w-20 h-20 bg-brand-primary/10 rounded-3xl flex items-center justify-center mb-6 shadow-inner ring-1 ring-white/5">
+              <Settings className="text-brand-primary animate-pulse-slow" size={40} />
+            </div>
+            <h1 className="text-4xl font-bold font-display tracking-tight mb-2">Control Tower</h1>
+            <p className="text-white/40 text-sm">Secure access for Findinggoodd administrators</p>
+          </div>
+
+          <form onSubmit={handleEmailLogin} className="space-y-5">
+            <div className="space-y-2">
+              <label className="text-[10px] font-bold text-white/40 uppercase tracking-[0.2em] ml-1">Administrator Email</label>
+              <div className="relative group">
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20 group-focus-within:text-brand-primary transition-colors" size={20} />
+                <input 
+                  type="email"
+                  value={loginEmail}
+                  onChange={e => setLoginEmail(e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 pl-12 focus:border-brand-primary outline-none transition-all placeholder:text-white/10"
+                  placeholder="name@findinggoodd.com"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-[10px] font-bold text-white/40 uppercase tracking-[0.2em] ml-1">Master Password</label>
+              <div className="relative group">
+                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20 group-focus-within:text-brand-primary transition-colors" size={20} />
+                <input 
+                  type="password"
+                  value={loginPassword}
+                  onChange={e => setLoginPassword(e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 pl-12 focus:border-brand-primary outline-none transition-all placeholder:text-white/10"
+                  placeholder="••••••••••••"
+                  required
+                />
+              </div>
+            </div>
+
+            {loginError && (
+              <motion.div 
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-500 text-xs font-medium text-center"
+              >
+                {loginError}
+              </motion.div>
+            )}
+
+            {resetSent && (
+              <motion.div 
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="p-4 bg-brand-primary/10 border border-brand-primary/20 rounded-xl text-brand-primary text-xs font-medium text-center hover:scale-105 transition-transform"
+              >
+                Reset link deployed to your inbox!
+              </motion.div>
+            )}
+
+            <button 
+              type="submit"
+              disabled={isLoggingIn}
+              className="w-full bg-brand-primary hover:bg-brand-primary/80 disabled:opacity-50 text-white font-black py-4 rounded-2xl flex items-center justify-center gap-3 transition-all hover:shadow-lg hover:shadow-brand-primary/30 active:scale-95 mt-4"
+            >
+              {isLoggingIn ? <Loader2 className="animate-spin" size={20} /> : <CheckCircle size={20} />}
+              Initiate Login
+            </button>
+          </form>
+
+          <div className="mt-8 flex flex-col items-center gap-4">
+            <button 
+              onClick={handleForgotPassword}
+              className="text-white/30 hover:text-white text-xs font-bold uppercase tracking-widest transition-colors flex items-center gap-2 group"
+            >
+              <Key size={14} className="group-hover:rotate-12 transition-transform" />
+              Reset Access Credentials
+            </button>
+            <div className="h-px w-20 bg-white/5" />
+            <p className="text-[10px] text-white/20 font-medium italic">Authorized Personnel Only</p>
+          </div>
+        </motion.div>
       </div>
     );
   }
