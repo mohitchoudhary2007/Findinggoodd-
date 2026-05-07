@@ -66,9 +66,19 @@ export default function App() {
   }, []);
 
   const filteredMovies = useMemo(() => {
-    if (!searchQuery) return movies;
-    const lower = searchQuery.toLowerCase();
-    return movies.filter(m => m.name.toLowerCase().includes(lower));
+    let result = movies;
+    if (searchQuery) {
+      const lower = searchQuery.toLowerCase();
+      result = movies.filter(m => m.name.toLowerCase().includes(lower));
+    } else {
+      result = [...movies];
+    }
+    
+    return result.sort((a, b) => {
+      if (a.isTrending && !b.isTrending) return -1;
+      if (!a.isTrending && b.isTrending) return 1;
+      return 0;
+    });
   }, [movies, searchQuery]);
 
   const paginatedMovies = useMemo(() => {
