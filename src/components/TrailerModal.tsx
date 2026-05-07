@@ -7,18 +7,20 @@ import { Ad } from '@/src/types';
 
 interface TrailerModalProps {
   url: string | null;
+  duration: number;
   onClose: () => void;
 }
 
-export default function TrailerModal({ url, onClose }: TrailerModalProps) {
+export default function TrailerModal({ url, duration, onClose }: TrailerModalProps) {
   const [showAd, setShowAd] = useState(true);
-  const [adTimer, setAdTimer] = useState(5);
+  const [adTimer, setAdTimer] = useState(duration);
   const [currentAd, setCurrentAd] = useState<Ad | null>(null);
 
   useEffect(() => {
     if (!url) return;
+    
     setShowAd(true);
-    setAdTimer(5);
+    setAdTimer(duration);
     
     // Fetch a random active ad
     const fetchRandomAd = async () => {
@@ -96,12 +98,23 @@ export default function TrailerModal({ url, onClose }: TrailerModalProps) {
                     rel="noopener noreferrer"
                     className="block w-full h-full rounded-2xl overflow-hidden relative"
                   >
-                    <img 
-                      src={currentAd.imageUrl} 
-                      className="w-full h-full object-cover" 
-                      alt="Advertisement"
-                      referrerPolicy="no-referrer"
-                    />
+                    {currentAd.mediaType === 'video' ? (
+                      <video 
+                        src={currentAd.imageUrl} 
+                        className="w-full h-full object-cover" 
+                        autoPlay 
+                        muted 
+                        loop 
+                        playsInline
+                      />
+                    ) : (
+                      <img 
+                        src={currentAd.imageUrl} 
+                        className="w-full h-full object-cover" 
+                        alt="Advertisement"
+                        referrerPolicy="no-referrer"
+                      />
+                    )}
                     <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors" />
                     {currentAd.targetUrl && (
                       <div className="absolute bottom-4 right-4 bg-black/60 backdrop-blur-md text-white px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -133,7 +146,7 @@ export default function TrailerModal({ url, onClose }: TrailerModalProps) {
                     <motion.div
                       initial={{ width: 0 }}
                       animate={{ width: '100%' }}
-                      transition={{ duration: 5, ease: "linear" }}
+                      transition={{ duration: duration, ease: "linear" }}
                       className="h-full bg-brand-primary"
                     />
                   </div>

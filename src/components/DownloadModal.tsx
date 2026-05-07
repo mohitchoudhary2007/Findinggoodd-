@@ -8,16 +8,20 @@ import { Ad } from '@/src/types';
 interface DownloadModalProps {
   movieName: string;
   targetUrl: string | null;
+  duration: number;
   onClose: () => void;
 }
 
-export default function DownloadModal({ movieName, targetUrl, onClose }: DownloadModalProps) {
-  const [adTimer, setAdTimer] = useState(10);
+export default function DownloadModal({ movieName, targetUrl, duration, onClose }: DownloadModalProps) {
+  const [adTimer, setAdTimer] = useState(duration);
   const [currentAd, setCurrentAd] = useState<Ad | null>(null);
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
     if (!targetUrl) return;
+
+    setAdTimer(duration);
+    setIsReady(false);
 
     // Fetch a random active ad
     const fetchRandomAd = async () => {
@@ -89,12 +93,23 @@ export default function DownloadModal({ movieName, targetUrl, onClose }: Downloa
                   <span className="text-xs font-black uppercase tracking-widest">Verified Sponsor Content</span>
                 </div>
                 <div className="aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl ring-1 ring-white/10 relative group">
-                  <img 
-                    src={currentAd.imageUrl} 
-                    className="w-full h-full object-cover" 
-                    alt="Sponsor Ad" 
-                    referrerPolicy="no-referrer"
-                  />
+                  {currentAd.mediaType === 'video' ? (
+                    <video 
+                      src={currentAd.imageUrl} 
+                      className="w-full h-full object-cover" 
+                      autoPlay 
+                      muted 
+                      loop 
+                      playsInline
+                    />
+                  ) : (
+                    <img 
+                      src={currentAd.imageUrl} 
+                      className="w-full h-full object-cover" 
+                      alt="Sponsor Ad" 
+                      referrerPolicy="no-referrer"
+                    />
+                  )}
                   {currentAd.targetUrl && (
                     <a 
                       href={currentAd.targetUrl} 
@@ -146,7 +161,7 @@ export default function DownloadModal({ movieName, targetUrl, onClose }: Downloa
                       fill="transparent"
                       strokeDasharray={175.92}
                       initial={{ strokeDashoffset: 175.92 }}
-                      animate={{ strokeDashoffset: (adTimer / 10) * 175.92 }}
+                      animate={{ strokeDashoffset: (adTimer / duration) * 175.92 }}
                       className="text-brand-primary"
                     />
                   </svg>

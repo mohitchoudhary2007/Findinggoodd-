@@ -183,12 +183,14 @@ export default function App() {
       
       <TrailerModal 
         url={trailerUrl} 
+        duration={config?.trailerAdDuration || 5}
         onClose={() => setTrailerUrl(null)} 
       />
 
       <DownloadModal
         movieName={downloadInfo?.name || ''}
         targetUrl={downloadInfo?.url || null}
+        duration={config?.downloadAdDuration || 10}
         onClose={() => setDownloadInfo(null)}
       />
 

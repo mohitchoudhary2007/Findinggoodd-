@@ -38,6 +38,8 @@
         "id": { "type": "string" },
         "trendingMovies": { "type": "array", "items": { "type": "string" } },
         "siteName": { "type": "string" },
+        "trailerAdDuration": { "type": "number" },
+        "downloadAdDuration": { "type": "number" },
         "privacyPolicy": { "type": "string" },
         "termsOfService": { "type": "string" },
         "socialLinks": {
@@ -59,12 +61,13 @@
       "properties": {
         "id": { "type": "string" },
         "type": { "type": "string", "enum": ["trailer", "download"] },
+        "mediaType": { "type": "string", "enum": ["image", "video"] },
         "imageUrl": { "type": "string", "format": "uri" },
         "targetUrl": { "type": "string", "format": "uri" },
         "isActive": { "type": "boolean" },
         "createdAt": { "type": "string", "format": "date-time" }
       },
-      "required": ["type", "imageUrl", "isActive"]
+      "required": ["type", "mediaType", "imageUrl", "isActive"]
     }
   },
   "firestore": {

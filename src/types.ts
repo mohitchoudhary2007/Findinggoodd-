@@ -22,6 +22,7 @@ export interface Feedback {
 export interface Ad {
   id: string;
   type: 'trailer' | 'download';
+  mediaType: 'image' | 'video';
   imageUrl: string;
   targetUrl?: string;
   isActive: boolean;
@@ -30,6 +31,8 @@ export interface Ad {
 
 export interface AppConfig {
   trendingMovies: string[];
+  trailerAdDuration?: number;
+  downloadAdDuration?: number;
   siteName?: string;
   privacyPolicy?: string;
   termsOfService?: string;

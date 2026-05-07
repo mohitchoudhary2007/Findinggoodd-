@@ -60,6 +60,7 @@ export default function AdminPanel() {
 
   const [adFormData, setAdFormData] = useState({
     type: 'trailer' as 'trailer' | 'download',
+    mediaType: 'image' as 'image' | 'video',
     imageUrl: '',
     targetUrl: '',
     isActive: true
@@ -68,6 +69,8 @@ export default function AdminPanel() {
   const [trendingInput, setTrendingInput] = useState('');
   const [trendingList, setTrendingList] = useState<string[]>([]);
   const [siteName, setSiteName] = useState('Findinggoodd');
+  const [trailerAdDuration, setTrailerAdDuration] = useState(5);
+  const [downloadAdDuration, setDownloadAdDuration] = useState(10);
   const [privacyPolicy, setPrivacyPolicy] = useState('');
   const [termsOfService, setTermsOfService] = useState('');
   const [socialLinks, setSocialLinks] = useState({
@@ -138,6 +141,8 @@ export default function AdminPanel() {
         const data = doc.data();
         setTrendingList(data.trendingMovies || []);
         setSiteName(data.siteName || 'Findinggoodd');
+        setTrailerAdDuration(data.trailerAdDuration || 5);
+        setDownloadAdDuration(data.downloadAdDuration || 10);
         setPrivacyPolicy(data.privacyPolicy || '');
         setTermsOfService(data.termsOfService || '');
         setSocialLinks(data.socialLinks || { instagram: '', twitter: '', facebook: '', mail: '' });
@@ -232,6 +237,8 @@ export default function AdminPanel() {
       await setDoc(doc(db, 'config', 'app'), {
         trendingMovies: trendingList,
         siteName: siteName,
+        trailerAdDuration: trailerAdDuration,
+        downloadAdDuration: downloadAdDuration,
         privacyPolicy: privacyPolicy,
         termsOfService: termsOfService,
         socialLinks: socialLinks,
@@ -260,7 +267,7 @@ export default function AdminPanel() {
         });
         toast.success('Ad published');
       }
-      setAdFormData({ type: 'trailer', imageUrl: '', targetUrl: '', isActive: true });
+      setAdFormData({ type: 'trailer', mediaType: 'image', imageUrl: '', targetUrl: '', isActive: true });
     } catch (err) {
       handleFirestoreError(err, adEditing ? OperationType.UPDATE : OperationType.CREATE, adEditing ? `ads/${adEditing}` : 'ads');
     }
@@ -628,19 +635,45 @@ export default function AdminPanel() {
                 </div>
 
                 <div className="pt-8 border-t border-white/5 space-y-8">
-                  <div>
+                  <div className="space-y-4">
                     <h2 className="text-2xl font-bold font-display mb-2">Global Identity</h2>
-                    <p className="text-white/40">Change the name of your website.</p>
+                    <p className="text-white/40">Change the name and ad display settings.</p>
                   </div>
                   
-                  <div className="space-y-2">
-                    <label className="text-xs font-bold text-white/40 uppercase tracking-widest pl-1">Website Name</label>
-                    <input 
-                      value={siteName}
-                      onChange={e => setSiteName(e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-brand-primary outline-none transition-all"
-                      placeholder="e.g. Findinggoodd"
-                    />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold text-white/40 uppercase tracking-widest pl-1">Website Name</label>
+                      <input 
+                        value={siteName}
+                        onChange={e => setSiteName(e.target.value)}
+                        className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-brand-primary outline-none transition-all"
+                        placeholder="e.g. Findinggoodd"
+                      />
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <label className="text-xs font-bold text-white/40 uppercase tracking-widest pl-1">Trailer Ad (sec)</label>
+                        <input 
+                          type="number"
+                          min="5"
+                          max="30"
+                          value={trailerAdDuration}
+                          onChange={e => setTrailerAdDuration(parseInt(e.target.value) || 5)}
+                          className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-brand-primary outline-none transition-all text-center"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-xs font-bold text-white/40 uppercase tracking-widest pl-1">Download Ad (sec)</label>
+                        <input 
+                          type="number"
+                          min="5"
+                          max="30"
+                          value={downloadAdDuration}
+                          onChange={e => setDownloadAdDuration(parseInt(e.target.value) || 10)}
+                          className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-brand-primary outline-none transition-all text-center"
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
 
@@ -819,9 +852,40 @@ export default function AdminPanel() {
                         </button>
                       </div>
                     </div>
+
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold text-white/40 uppercase tracking-widest pl-1">Media Type</label>
+                      <div className="flex gap-2">
+                        <button 
+                          type="button"
+                          onClick={() => setAdFormData({...adFormData, mediaType: 'image'})}
+                          className={cn(
+                            "flex-1 py-3 rounded-xl font-bold text-xs border transition-all",
+                            adFormData.mediaType === 'image' 
+                              ? "bg-brand-primary border-brand-primary text-white" 
+                              : "bg-white/5 border-white/10 text-white/40 hover:bg-white/10"
+                          )}
+                        >
+                          Photo/Static
+                        </button>
+                        <button 
+                          type="button"
+                          onClick={() => setAdFormData({...adFormData, mediaType: 'video'})}
+                          className={cn(
+                            "flex-1 py-3 rounded-xl font-bold text-xs border transition-all",
+                            adFormData.mediaType === 'video' 
+                              ? "bg-brand-primary border-brand-primary text-white" 
+                              : "bg-white/5 border-white/10 text-white/40 hover:bg-white/10"
+                          )}
+                        >
+                          Video Ad
+                        </button>
+                      </div>
+                    </div>
+
                     <div className="space-y-2">
                       <label className="text-xs font-bold text-white/40 uppercase tracking-widest pl-1 flex items-center gap-2">
-                        <ImageIcon size={14} /> Banner Image URL
+                        <ImageIcon size={14} /> {adFormData.mediaType === 'video' ? 'Video File URL (Direct)' : 'Banner Image URL'}
                       </label>
                       <input 
                         value={adFormData.imageUrl}
@@ -862,7 +926,7 @@ export default function AdminPanel() {
                         type="button" 
                         onClick={() => {
                           setAdEditing(null);
-                          setAdFormData({ type: 'trailer', imageUrl: '', targetUrl: '', isActive: true });
+                          setAdFormData({ type: 'trailer', mediaType: 'image', imageUrl: '', targetUrl: '', isActive: true });
                         }}
                         className="bg-white/10 hover:bg-white/20 p-4 rounded-xl"
                       >
@@ -882,7 +946,11 @@ export default function AdminPanel() {
                     className="glass-panel p-4 rounded-2xl flex items-center gap-6 group hover:border-brand-primary/30 transition-all overflow-hidden"
                   >
                     <div className="w-40 h-24 bg-foreground/5 rounded-xl overflow-hidden shadow-lg border border-white/5">
-                      <img src={ad.imageUrl} className="w-full h-full object-cover" alt="" referrerPolicy="no-referrer" />
+                      {ad.mediaType === 'video' ? (
+                        <video src={ad.imageUrl} className="w-full h-full object-cover" muted loop autoPlay />
+                      ) : (
+                        <img src={ad.imageUrl} className="w-full h-full object-cover" alt="" referrerPolicy="no-referrer" />
+                      )}
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
@@ -918,6 +986,7 @@ export default function AdminPanel() {
                           setAdEditing(ad.id);
                           setAdFormData({
                             type: ad.type as 'trailer' | 'download',
+                            mediaType: (ad.mediaType || 'image') as 'image' | 'video',
                             imageUrl: ad.imageUrl,
                             targetUrl: ad.targetUrl || '',
                             isActive: ad.isActive
