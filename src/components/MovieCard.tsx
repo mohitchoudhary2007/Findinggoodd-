@@ -41,17 +41,19 @@ export default function MovieCard({ movie, onWatchTrailer, onDownload }: MovieCa
         <h3 className="text-sm md:text-xl font-bold font-display mb-2 md:mb-3 drop-shadow-lg leading-tight line-clamp-2 md:group-hover:text-glow-effect transition-all duration-300 transform group-hover:scale-105 origin-left text-white">{movie.name}</h3>
         
         <div className="grid grid-cols-1 gap-2 md:grid-cols-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-500 delay-100">
-          <button
-            onClick={() => onWatchTrailer(movie.trailerUrl)}
-            className="bg-white/20 hover:bg-white/30 backdrop-blur-md text-white py-1.5 md:py-2 px-2 md:px-4 rounded-lg md:rounded-xl flex items-center justify-center gap-1.5 md:gap-2 transition-all active:scale-95"
-          >
-            <Play size={14} fill="currentColor" className="md:w-[18px] md:h-[18px]" />
-            <span className="font-semibold text-[10px] md:text-sm uppercase md:capitalize tracking-wider md:tracking-normal">Trailer</span>
-          </button>
+          {movie.trailerUrl && movie.trailerUrl.trim() !== '' && (
+            <button
+              onClick={() => onWatchTrailer(movie.trailerUrl!)}
+              className="bg-white/20 hover:bg-white/30 backdrop-blur-md text-white py-1.5 md:py-2 px-2 md:px-4 rounded-lg md:rounded-xl flex items-center justify-center gap-1.5 md:gap-2 transition-all active:scale-95"
+            >
+              <Play size={14} fill="currentColor" className="md:w-[18px] md:h-[18px]" />
+              <span className="font-semibold text-[10px] md:text-sm uppercase md:capitalize tracking-wider md:tracking-normal">Trailer</span>
+            </button>
+          )}
           
           <button
             onClick={() => onDownload(movie.name, movie.downloadUrl)}
-            className="bg-brand-primary hover:bg-brand-primary/80 text-white py-1.5 md:py-2 px-2 md:px-4 rounded-lg md:rounded-xl flex items-center justify-center gap-1.5 md:gap-2 transition-all active:scale-95 shadow-lg shadow-brand-primary/20"
+            className={`bg-brand-primary hover:bg-brand-primary/80 text-white py-1.5 md:py-2 px-2 md:px-4 rounded-lg md:rounded-xl flex items-center justify-center gap-1.5 md:gap-2 transition-all active:scale-95 shadow-lg shadow-brand-primary/20 ${(!movie.trailerUrl || movie.trailerUrl.trim() === '') ? 'md:col-span-2' : ''}`}
           >
             <Download size={14} className="md:w-[18px] md:h-[18px]" />
             <span className="font-semibold text-[10px] md:text-sm uppercase md:capitalize tracking-wider md:tracking-normal">Download</span>

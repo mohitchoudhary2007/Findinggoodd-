@@ -527,14 +527,13 @@ export default function AdminPanel() {
                     </div>
                     <div className="space-y-2">
                       <label className="text-xs font-bold text-foreground/40 uppercase tracking-widest pl-1 flex items-center gap-2">
-                        <Film size={14} /> Trailer URL
+                        <Film size={14} /> Trailer URL (Optional)
                       </label>
                       <input 
                         value={formData.trailerUrl}
                         onChange={e => setFormData({...formData, trailerUrl: e.target.value})}
                         className="w-full bg-foreground/5 border border-border rounded-xl p-4 focus:border-brand-primary outline-none transition-all"
                         placeholder="https://youtube.com/..."
-                        required
                       />
                     </div>
                     <label className="flex items-center gap-3 cursor-pointer group p-4 bg-foreground/5 rounded-xl border border-border hover:border-brand-primary transition-all">

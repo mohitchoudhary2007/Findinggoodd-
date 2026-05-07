@@ -5,7 +5,7 @@ export interface Movie {
   name: string;
   posterUrl: string;
   downloadUrl: string;
-  trailerUrl: string;
+  trailerUrl?: string;
   isTrending: boolean;
   createdAt: Timestamp | Date;
 }
