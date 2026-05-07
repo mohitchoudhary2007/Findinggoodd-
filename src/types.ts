@@ -21,6 +21,7 @@ export interface Feedback {
 
 export interface Ad {
   id: string;
+  type: 'trailer' | 'download';
   imageUrl: string;
   targetUrl?: string;
   isActive: boolean;

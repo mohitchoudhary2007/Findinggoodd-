@@ -23,7 +23,12 @@ export default function TrailerModal({ url, onClose }: TrailerModalProps) {
     // Fetch a random active ad
     const fetchRandomAd = async () => {
       try {
-        const q = query(collection(db, 'ads'), where('isActive', '==', true), limit(10));
+        const q = query(
+          collection(db, 'ads'), 
+          where('isActive', '==', true), 
+          where('type', '==', 'trailer'),
+          limit(10)
+        );
         const snapshot = await getDocs(q);
         if (!snapshot.empty) {
           const adsList = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Ad));

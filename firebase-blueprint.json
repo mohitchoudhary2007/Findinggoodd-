@@ -58,12 +58,13 @@
       "type": "object",
       "properties": {
         "id": { "type": "string" },
+        "type": { "type": "string", "enum": ["trailer", "download"] },
         "imageUrl": { "type": "string", "format": "uri" },
         "targetUrl": { "type": "string", "format": "uri" },
         "isActive": { "type": "boolean" },
         "createdAt": { "type": "string", "format": "date-time" }
       },
-      "required": ["imageUrl", "isActive"]
+      "required": ["type", "imageUrl", "isActive"]
     }
   },
   "firestore": {

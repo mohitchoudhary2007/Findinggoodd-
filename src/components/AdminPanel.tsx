@@ -59,6 +59,7 @@ export default function AdminPanel() {
   });
 
   const [adFormData, setAdFormData] = useState({
+    type: 'trailer' as 'trailer' | 'download',
     imageUrl: '',
     targetUrl: '',
     isActive: true
@@ -259,7 +260,7 @@ export default function AdminPanel() {
         });
         toast.success('Ad published');
       }
-      setAdFormData({ imageUrl: '', targetUrl: '', isActive: true });
+      setAdFormData({ type: 'trailer', imageUrl: '', targetUrl: '', isActive: true });
     } catch (err) {
       handleFirestoreError(err, adEditing ? OperationType.UPDATE : OperationType.CREATE, adEditing ? `ads/${adEditing}` : 'ads');
     }
@@ -790,6 +791,35 @@ export default function AdminPanel() {
                   </h2>
                   <div className="space-y-4">
                     <div className="space-y-2">
+                      <label className="text-xs font-bold text-white/40 uppercase tracking-widest pl-1">Ad Placement</label>
+                      <div className="flex gap-2">
+                        <button 
+                          type="button"
+                          onClick={() => setAdFormData({...adFormData, type: 'trailer'})}
+                          className={cn(
+                            "flex-1 py-3 rounded-xl font-bold text-xs border transition-all",
+                            adFormData.type === 'trailer' 
+                              ? "bg-brand-primary border-brand-primary text-white" 
+                              : "bg-white/5 border-white/10 text-white/40 hover:bg-white/10"
+                          )}
+                        >
+                          Trailer Ads (5s)
+                        </button>
+                        <button 
+                          type="button"
+                          onClick={() => setAdFormData({...adFormData, type: 'download'})}
+                          className={cn(
+                            "flex-1 py-3 rounded-xl font-bold text-xs border transition-all",
+                            adFormData.type === 'download' 
+                              ? "bg-brand-primary border-brand-primary text-white" 
+                              : "bg-white/5 border-white/10 text-white/40 hover:bg-white/10"
+                          )}
+                        >
+                          Download Ads (10s)
+                        </button>
+                      </div>
+                    </div>
+                    <div className="space-y-2">
                       <label className="text-xs font-bold text-white/40 uppercase tracking-widest pl-1 flex items-center gap-2">
                         <ImageIcon size={14} /> Banner Image URL
                       </label>
@@ -832,7 +862,7 @@ export default function AdminPanel() {
                         type="button" 
                         onClick={() => {
                           setAdEditing(null);
-                          setAdFormData({ imageUrl: '', targetUrl: '', isActive: true });
+                          setAdFormData({ type: 'trailer', imageUrl: '', targetUrl: '', isActive: true });
                         }}
                         className="bg-white/10 hover:bg-white/20 p-4 rounded-xl"
                       >
@@ -863,10 +893,13 @@ export default function AdminPanel() {
                         )}>
                           {ad.isActive ? 'Live' : 'Paused'}
                         </span>
+                        <span className="text-[8px] font-black px-2 py-0.5 rounded tracking-tighter uppercase bg-brand-primary/20 text-brand-primary border border-brand-primary/20">
+                          {ad.type}
+                        </span>
                       </div>
                       <div className="flex items-center gap-4 text-white/30 text-[10px]">
                         <span className="flex items-center gap-1"><LinkIcon size={10} /> {ad.targetUrl || 'No Link'}</span>
-                        <span className="flex items-center gap-1"><Eye size={10} /> Shown on Trailers</span>
+                        <span className="flex items-center gap-1"><Eye size={10} /> {ad.type === 'trailer' ? 'Shown on Trailers' : 'Shown on Downloads'}</span>
                       </div>
                     </div>
                     <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -884,6 +917,7 @@ export default function AdminPanel() {
                         onClick={() => {
                           setAdEditing(ad.id);
                           setAdFormData({
+                            type: ad.type as 'trailer' | 'download',
                             imageUrl: ad.imageUrl,
                             targetUrl: ad.targetUrl || '',
                             isActive: ad.isActive

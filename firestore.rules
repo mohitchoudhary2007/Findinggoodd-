@@ -53,7 +53,8 @@ service cloud.firestore {
     }
 
     function isValidAd(data) {
-      return data.imageUrl is string && data.imageUrl.size() <= 1000 &&
+      return data.type in ['trailer', 'download'] &&
+             data.imageUrl is string && data.imageUrl.size() <= 1000 &&
              (data.targetUrl == null || (data.targetUrl is string && data.targetUrl.size() <= 1000)) &&
              data.isActive is bool &&
              data.createdAt is timestamp;
