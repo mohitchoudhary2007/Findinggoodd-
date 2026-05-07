@@ -300,33 +300,55 @@ export default function AdminPanel() {
 
   if (!user || !isAdmin) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-background">
+      <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-background relative overflow-hidden transform-gpu">
         <BackgroundDecoration />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-brand-primary/10 via-background to-background pointer-events-none" />
+        
         <motion.div 
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="w-full max-w-md glass-panel p-10 rounded-[2.5rem] shadow-2xl relative overflow-hidden"
+          initial={{ opacity: 0, y: 30, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="w-full max-w-md glass-panel p-10 rounded-[2.5rem] shadow-[0_0_50px_rgba(255,61,0,0.1)] relative z-10 before:absolute before:inset-0 before:rounded-[2.5rem] before:p-[1px] before:bg-gradient-to-b before:from-white/10 before:to-transparent before:-z-10 bg-background/50 backdrop-blur-2xl"
         >
-          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-primary/0 via-brand-primary to-brand-primary/0" />
-          
-          <div className="flex flex-col items-center text-center mb-10">
-            <div className="w-20 h-20 bg-brand-primary/10 rounded-3xl flex items-center justify-center mb-6 shadow-inner ring-1 ring-white/5">
-              <Settings className="text-brand-primary animate-pulse-slow" size={40} />
-            </div>
-            <h1 className="text-4xl font-bold font-display tracking-tight mb-2">Control Tower</h1>
-            <p className="text-foreground/40 text-sm">Secure access for Findinggoodd administrators</p>
+          {/* Animated Light Sweep Effect */}
+          <motion.div 
+            animate={{
+              left: ['-100%', '200%'],
+            }}
+            transition={{
+              duration: 5,
+              repeat: Infinity,
+              ease: "easeInOut",
+              repeatDelay: 1
+            }}
+            className="absolute top-0 bottom-0 w-32 bg-gradient-to-r from-transparent via-brand-primary/10 to-transparent skew-x-[-20deg] pointer-events-none"
+          />
+
+          <div className="flex flex-col items-center text-center mb-10 relative">
+            <motion.div 
+              animate={{ 
+                boxShadow: ['0 0 10px rgba(255,61,0,0.2)', '0 0 30px rgba(255,61,0,0.5)', '0 0 10px rgba(255,61,0,0.2)']
+              }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              className="w-20 h-20 bg-gradient-to-br from-brand-primary/20 to-brand-secondary/10 rounded-3xl flex items-center justify-center mb-6 ring-1 ring-white/10 relative overflow-hidden"
+            >
+              <div className="absolute inset-0 bg-brand-primary/20 blur-xl mix-blend-screen" />
+              <Settings className="text-brand-primary animate-spin-slow relative z-10" size={40} />
+            </motion.div>
+            <h1 className="text-4xl font-bold font-display tracking-tight mb-2 text-glow-effect">Control Tower</h1>
+            <p className="text-foreground/50 text-sm font-medium">Secure access for Findinggoodd administrators</p>
           </div>
 
-          <form onSubmit={handleAdminLogin} className="space-y-5">
+          <form onSubmit={handleAdminLogin} className="space-y-6 relative z-10">
             <div className="space-y-2">
-              <label className="text-[10px] font-bold text-foreground/40 uppercase tracking-[0.2em] ml-1">Administrator Email</label>
+              <label className="text-[10px] font-bold text-foreground/40 uppercase tracking-[0.2em] ml-2">Administrator Email</label>
               <div className="relative group">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-foreground/20 group-focus-within:text-brand-primary transition-colors" size={20} />
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-foreground/20 group-focus-within:text-brand-primary transition-colors duration-300" size={20} />
                 <input 
                   type="text"
                   value={loginPhone}
                   onChange={e => setLoginPhone(e.target.value)}
-                  className="w-full bg-foreground/5 border border-border rounded-2xl p-4 pl-12 focus:border-brand-primary outline-none transition-all placeholder:text-foreground/10"
+                  className="w-full bg-black/40 border border-white/5 rounded-2xl p-4 pl-12 focus:border-brand-primary focus:bg-black/60 outline-none transition-all duration-300 placeholder:text-foreground/10 focus:shadow-[0_0_20px_rgba(255,61,0,0.15)] focus:-translate-y-0.5"
                   placeholder="admin@findinggoodd.com"
                   required
                 />
@@ -334,14 +356,14 @@ export default function AdminPanel() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-[10px] font-bold text-foreground/40 uppercase tracking-[0.2em] ml-1">Master Password</label>
+              <label className="text-[10px] font-bold text-foreground/40 uppercase tracking-[0.2em] ml-2">Master Password</label>
               <div className="relative group">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-foreground/20 group-focus-within:text-brand-primary transition-colors" size={20} />
+                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-foreground/20 group-focus-within:text-brand-primary transition-colors duration-300" size={20} />
                 <input 
                   type="password"
                   value={loginPassword}
                   onChange={e => setLoginPassword(e.target.value)}
-                  className="w-full bg-foreground/5 border border-border rounded-2xl p-4 pl-12 focus:border-brand-primary outline-none transition-all placeholder:text-foreground/10"
+                  className="w-full bg-black/40 border border-white/5 rounded-2xl p-4 pl-12 focus:border-brand-primary focus:bg-black/60 outline-none transition-all duration-300 placeholder:text-foreground/10 focus:shadow-[0_0_20px_rgba(255,61,0,0.15)] focus:-translate-y-0.5"
                   placeholder="••••••••••••"
                   required
                 />
@@ -371,23 +393,26 @@ export default function AdminPanel() {
             <button 
               type="submit"
               disabled={isLoggingIn}
-              className="w-full bg-brand-primary hover:bg-brand-primary/80 disabled:opacity-50 text-white font-black py-4 rounded-2xl flex items-center justify-center gap-3 transition-all hover:shadow-lg hover:shadow-brand-primary/30 active:scale-95 mt-4"
+              className="w-full bg-gradient-to-r from-brand-primary to-brand-secondary hover:from-brand-primary/90 hover:to-brand-secondary/90 disabled:opacity-50 text-white font-black py-4 rounded-2xl flex items-center justify-center gap-3 transition-all duration-300 hover:shadow-[0_0_30px_rgba(255,61,0,0.3)] active:scale-95 mt-6 relative overflow-hidden group"
             >
-              {isLoggingIn ? <Loader2 className="animate-spin" size={20} /> : <CheckCircle size={20} />}
-              Initiate Login
+              <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
+              <div className="relative z-10 flex items-center gap-3">
+                {isLoggingIn ? <Loader2 className="animate-spin" size={20} /> : <CheckCircle size={20} className="group-hover:rotate-12 transition-transform" />}
+                Initiate Login
+              </div>
             </button>
           </form>
 
-          <div className="mt-8 flex flex-col items-center gap-4">
+          <div className="mt-8 flex flex-col items-center gap-5 relative z-10">
             <button 
               onClick={handleForgotPassword}
-              className="text-white/30 hover:text-white text-xs font-bold uppercase tracking-widest transition-colors flex items-center gap-2 group"
+              className="text-white/40 hover:text-white text-xs font-bold uppercase tracking-widest transition-colors duration-300 flex items-center gap-2 group hover:text-glow-effect"
             >
-              <Key size={14} className="group-hover:rotate-12 transition-transform" />
+              <Key size={14} className="group-hover:rotate-12 transition-transform duration-300 text-brand-primary" />
               Reset Access Credentials
             </button>
-            <div className="h-px w-20 bg-white/5" />
-            <p className="text-[10px] text-white/20 font-medium italic">Authorized Personnel Only</p>
+            <div className="h-px w-24 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+            <p className="text-[10px] text-white/30 font-medium italic tracking-wider">Authorized Personnel Only</p>
           </div>
         </motion.div>
       </div>
@@ -399,52 +424,56 @@ export default function AdminPanel() {
       <BackgroundDecoration />
       <Toaster position="top-center" reverseOrder={false} />
       <div className="max-w-7xl mx-auto">
-        <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
-          <div>
-            <h1 className="text-4xl font-bold font-display">Control Center</h1>
-            <p className="text-foreground/40">Welcome back, manager. You have total control.</p>
+        <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12 relative">
+          <div className="absolute -left-10 top-1/2 -translate-y-1/2 w-40 h-40 bg-brand-primary/10 blur-[50px] rounded-full pointer-events-none" />
+          <div className="relative z-10">
+            <h1 className="text-4xl font-bold font-display flex items-center gap-4">
+              <span className="text-glow-effect bg-gradient-to-r from-brand-primary to-white bg-clip-text text-transparent">Control Center</span>
+              <div className="w-3 h-3 rounded-full bg-green-500 animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.6)]" title="System Active" />
+            </h1>
+            <p className="text-foreground/50 mt-1 font-medium">Welcome back, manager. You have total control.</p>
           </div>
-          <div className="flex gap-4">
+          <div className="flex gap-4 relative z-10">
             <button 
               onClick={() => signOut(auth)}
-              className="flex items-center gap-2 bg-foreground/5 hover:bg-foreground/10 text-foreground/60 hover:text-foreground px-6 py-3 rounded-xl transition-all"
+              className="flex items-center gap-2 bg-foreground/5 hover:bg-red-500/10 text-foreground/60 hover:text-red-500 px-6 py-3 rounded-xl transition-all duration-300 border border-transparent hover:border-red-500/20 group"
             >
-              <LogOut size={18} />
-              Logout
+              <LogOut size={18} className="group-hover:-translate-x-1 transition-transform duration-300" />
+              <span className="font-bold tracking-wide">Logout</span>
             </button>
           </div>
         </header>
 
-        <div className="flex gap-4 mb-12 overflow-x-auto scrollbar-hide">
+        <div className="flex gap-4 mb-12 overflow-x-auto scrollbar-hide pb-4">
           <button 
             onClick={() => setTab('movies')}
-            className={cn("flex items-center gap-2 px-8 py-4 rounded-2xl font-bold transition-all whitespace-nowrap", tab === 'movies' ? "bg-brand-primary text-white shadow-lg shadow-brand-primary/20" : "bg-white/5 text-white/40 hover:bg-white/10")}
+            className={cn("flex items-center gap-3 px-8 py-4 rounded-2xl font-bold transition-all duration-300 whitespace-nowrap", tab === 'movies' ? "bg-gradient-to-r from-brand-primary to-brand-secondary text-white shadow-[0_0_20px_rgba(255,61,0,0.3)] scale-105" : "bg-white/5 text-white/50 hover:bg-white/10 hover:text-white")}
           >
-            <Film size={20} />
+            <Film size={20} className={tab === 'movies' ? "animate-pulse" : ""} />
             Manage Movies
           </button>
           <button 
             onClick={() => setTab('ads')}
-            className={cn("flex items-center gap-2 px-8 py-4 rounded-2xl font-bold transition-all whitespace-nowrap", tab === 'ads' ? "bg-brand-primary text-white shadow-lg shadow-brand-primary/20" : "bg-white/5 text-white/40 hover:bg-white/10")}
+            className={cn("flex items-center gap-3 px-8 py-4 rounded-2xl font-bold transition-all duration-300 whitespace-nowrap", tab === 'ads' ? "bg-gradient-to-r from-brand-primary to-brand-secondary text-white shadow-[0_0_20px_rgba(255,61,0,0.3)] scale-105" : "bg-white/5 text-white/50 hover:bg-white/10 hover:text-white")}
           >
-            <Monitor size={20} />
+            <Monitor size={20} className={tab === 'ads' ? "animate-pulse" : ""} />
             Manage Ads
           </button>
           <button 
             onClick={() => setTab('config')}
-            className={cn("flex items-center gap-2 px-8 py-4 rounded-2xl font-bold transition-all whitespace-nowrap", tab === 'config' ? "bg-brand-primary text-white shadow-lg shadow-brand-primary/20" : "bg-white/5 text-white/40 hover:bg-white/10")}
+            className={cn("flex items-center gap-3 px-8 py-4 rounded-2xl font-bold transition-all duration-300 whitespace-nowrap", tab === 'config' ? "bg-gradient-to-r from-brand-primary to-brand-secondary text-white shadow-[0_0_20px_rgba(255,61,0,0.3)] scale-105" : "bg-white/5 text-white/50 hover:bg-white/10 hover:text-white")}
           >
-            <List size={20} />
+            <List size={20} className={tab === 'config' ? "animate-pulse" : ""} />
             Global Settings
           </button>
           <button 
             onClick={() => setTab('feedback')}
-            className={cn("flex items-center gap-2 px-8 py-4 rounded-2xl font-bold transition-all whitespace-nowrap relative", tab === 'feedback' ? "bg-brand-primary text-white shadow-lg shadow-brand-primary/20" : "bg-white/5 text-white/40 hover:bg-white/10")}
+            className={cn("flex items-center gap-3 px-8 py-4 rounded-2xl font-bold transition-all duration-300 whitespace-nowrap relative", tab === 'feedback' ? "bg-gradient-to-r from-brand-primary to-brand-secondary text-white shadow-[0_0_20px_rgba(255,61,0,0.3)] scale-105" : "bg-white/5 text-white/50 hover:bg-white/10 hover:text-white")}
           >
-            <MessageSquare size={20} />
+            <MessageSquare size={20} className={tab === 'feedback' ? "animate-bounce" : ""} />
             User Feedback
             {feedback.length > 0 && tab !== 'feedback' && (
-              <span className="absolute -top-1 -right-1 w-5 h-5 bg-brand-secondary text-black text-[10px] flex items-center justify-center rounded-full">
+              <span className="absolute -top-1 -right-1 w-6 h-6 bg-brand-primary text-white text-[10px] flex items-center justify-center rounded-full shadow-[0_0_10px_rgba(255,61,0,0.5)] border-2 border-background animate-pulse">
                 {feedback.length}
               </span>
             )}
@@ -454,13 +483,14 @@ export default function AdminPanel() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           {tab === 'movies' && (
             <>
-              <div className="lg:col-span-1">
-                <form onSubmit={handleSaveMovie} className="glass-panel p-8 rounded-3xl sticky top-8 space-y-6">
-                  <h2 className="text-2xl font-bold font-display flex items-center gap-3">
-                    {isEditing ? <Edit3 /> : <Plus />}
-                    {isEditing ? 'Edit Movie' : 'New Movie Entry'}
+                  <div className="lg:col-span-1">
+                <form onSubmit={handleSaveMovie} className="glass-panel p-8 rounded-[2rem] sticky top-8 space-y-6 shadow-2xl relative overflow-hidden group">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-brand-primary/10 blur-[40px] rounded-full pointer-events-none group-hover:bg-brand-primary/20 transition-colors duration-500" />
+                  <h2 className="text-2xl font-bold font-display flex items-center gap-3 relative z-10">
+                    {isEditing ? <Edit3 className="text-brand-primary animate-bounce" /> : <Plus className="text-brand-secondary animate-pulse" />}
+                    <span className="bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent">{isEditing ? 'Edit Movie' : 'New Movie Entry'}</span>
                   </h2>
-                  <div className="space-y-4">
+                  <div className="space-y-5 relative z-10">
                     <div className="space-y-2">
                       <label className="text-xs font-bold text-white/40 uppercase tracking-widest pl-1">Title Name</label>
                       <input 
@@ -540,24 +570,28 @@ export default function AdminPanel() {
 
               <div className="lg:col-span-2 space-y-4">
                 <h2 className="text-2xl font-bold font-display mb-6">Database Library ({movies.length})</h2>
-                {movies.map(movie => (
+                {movies.map((movie, index) => (
                   <motion.div 
                     layout
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.05, duration: 0.4 }}
                     key={movie.id}
-                    className="glass-panel p-4 rounded-2xl flex items-center gap-6 group hover:border-brand-primary/30 transition-all"
+                    className="glass-panel p-4 rounded-2xl flex items-center gap-6 group hover:border-brand-primary/50 hover:shadow-[0_0_30px_rgba(255,61,0,0.15)] transition-all duration-300 relative overflow-hidden"
                   >
-                    <img src={movie.posterUrl} className="w-20 h-28 object-cover rounded-xl shadow-lg" alt="" referrerPolicy="no-referrer" />
-                    <div className="flex-1">
+                    <div className="absolute inset-0 bg-gradient-to-r from-brand-primary/0 via-brand-primary/5 to-brand-primary/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 ease-in-out pointer-events-none" />
+                    <img src={movie.posterUrl} className="w-20 h-28 object-cover rounded-xl shadow-lg group-hover:scale-105 transition-transform duration-300" alt="" referrerPolicy="no-referrer" />
+                    <div className="flex-1 relative z-10">
                       <div className="flex items-center gap-2 mb-1">
-                        <h3 className="font-bold text-lg">{movie.name}</h3>
-                        {movie.isTrending && <span className="bg-brand-secondary text-black text-[8px] font-black px-2 py-0.5 rounded tracking-tighter uppercase">Trend</span>}
+                        <h3 className="font-bold text-lg group-hover:text-glow-effect transition-all duration-300">{movie.name}</h3>
+                        {movie.isTrending && <span className="bg-gradient-to-r from-brand-primary to-brand-secondary text-white text-[8px] font-black px-2 py-0.5 rounded tracking-tighter uppercase shadow-[0_0_10px_rgba(255,61,0,0.4)] animate-pulse">Trend</span>}
                       </div>
                       <div className="flex items-center gap-4 text-white/30 text-xs">
                         <span className="flex items-center gap-1"><LinkIcon size={12} /> {movie.downloadUrl.substring(0, 30)}...</span>
                         <span className="flex items-center gap-1"><Film size={12} /> Trailer Linked</span>
                       </div>
                     </div>
-                    <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 relative z-10">
                       <button 
                         onClick={() => {
                           setIsEditing(movie.id);
@@ -616,22 +650,27 @@ export default function AdminPanel() {
                 </div>
 
                 <div className="flex flex-wrap gap-3">
-                  {trendingList.map((item, i) => (
-                    <motion.div 
-                      key={i}
-                      initial={{ scale: 0.8, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      className="bg-white/10 px-4 py-2 rounded-xl flex items-center gap-3 border border-white/5"
-                    >
-                      <span className="font-medium">{item}</span>
-                      <button 
-                        onClick={() => setTrendingList(trendingList.filter((_, idx) => idx !== i))}
-                        className="text-white/20 hover:text-white transition-colors"
+                  <AnimatePresence>
+                    {trendingList.map((item, i) => (
+                      <motion.div 
+                        key={i + item}
+                        layout
+                        initial={{ scale: 0.8, opacity: 0, y: 10 }}
+                        animate={{ scale: 1, opacity: 1, y: 0 }}
+                        exit={{ scale: 0.8, opacity: 0 }}
+                        transition={{ delay: i * 0.05 }}
+                        className="bg-white/10 px-4 py-2 rounded-xl flex items-center gap-3 border border-white/5 hover:bg-white/20 hover:border-brand-primary/50 transition-all duration-300 group"
                       >
-                        <X size={14} />
-                      </button>
-                    </motion.div>
-                  ))}
+                        <span className="font-medium group-hover:text-glow-effect transition-all">{item}</span>
+                        <button 
+                          onClick={() => setTrendingList(trendingList.filter((_, idx) => idx !== i))}
+                          className="text-white/20 hover:text-red-500 transition-colors duration-300"
+                        >
+                          <X size={14} />
+                        </button>
+                      </motion.div>
+                    ))}
+                  </AnimatePresence>
                 </div>
 
                 <div className="pt-8 border-t border-white/5 space-y-8">
@@ -756,10 +795,11 @@ export default function AdminPanel() {
                 <div className="pt-8 border-t border-white/5">
                   <button 
                     onClick={handleSaveConfig}
-                    className="bg-brand-primary hover:bg-brand-primary/80 px-12 py-4 rounded-xl font-bold flex items-center gap-2 shadow-xl shadow-brand-primary/20 transition-all active:scale-95"
+                    className="bg-gradient-to-r from-brand-primary to-brand-secondary hover:from-brand-primary/90 hover:to-brand-secondary/90 px-12 py-4 rounded-xl font-bold flex items-center gap-2 shadow-[0_0_30px_rgba(255,61,0,0.3)] transition-all duration-300 active:scale-95 group relative overflow-hidden"
                   >
-                    <CheckCircle size={20} />
-                    Apply All Changes
+                    <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
+                    <CheckCircle size={20} className="relative z-10 group-hover:rotate-12 transition-transform duration-300" />
+                    <span className="relative z-10">Apply All Changes</span>
                   </button>
                 </div>
               </div>
@@ -768,10 +808,20 @@ export default function AdminPanel() {
 
           {tab === 'feedback' && (
             <div className="lg:col-span-2 space-y-6">
-              <h2 className="text-2xl font-bold font-display mb-8">User Communications</h2>
-              {feedback.map(item => (
-                <div key={item.id} className="glass-panel p-8 rounded-3xl space-y-4">
-                  <div className="flex justify-between items-start">
+              <h2 className="text-2xl font-bold font-display mb-8 relative inline-block">
+                User Communications
+                <div className="absolute -bottom-2 left-0 w-1/2 h-1 bg-gradient-to-r from-brand-primary to-transparent rounded-full" />
+              </h2>
+              {feedback.map((item, index) => (
+                <motion.div 
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.1, duration: 0.4, ease: "easeOut" }}
+                  key={item.id} 
+                  className="glass-panel p-8 rounded-3xl space-y-4 hover:border-brand-primary/30 hover:shadow-[0_0_30px_rgba(255,61,0,0.1)] transition-all duration-300 group relative overflow-hidden"
+                >
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-brand-primary/5 blur-[30px] rounded-full pointer-events-none group-hover:bg-brand-primary/15 transition-colors duration-500" />
+                  <div className="flex justify-between items-start relative z-10">
                     <div>
                       <div className="flex items-center gap-3 mb-1">
                         <h3 className="font-bold text-xl">{item.name}</h3>
@@ -795,15 +845,15 @@ export default function AdminPanel() {
                           }
                         }
                       }}
-                      className="p-3 bg-white/5 hover:bg-white/10 rounded-xl transition-all"
+                      className="p-3 bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white rounded-xl transition-all duration-300"
                     >
-                      <Trash2 size={18} className="text-white/30 hover:text-red-500 transition-colors" />
+                      <Trash2 size={18} />
                     </button>
                   </div>
-                  <div className="bg-white/5 p-6 rounded-2xl border border-white/5 leading-relaxed text-white/80">
+                  <div className="bg-white/5 p-6 rounded-2xl border border-white/5 leading-relaxed text-white/80 group-hover:bg-white/10 transition-colors duration-300 relative z-10">
                     {item.message}
                   </div>
-                </div>
+                </motion.div>
               ))}
               {feedback.length === 0 && (
                 <div className="py-20 text-center opacity-20">
@@ -817,12 +867,13 @@ export default function AdminPanel() {
           {tab === 'ads' && (
             <>
               <div className="lg:col-span-1">
-                <form onSubmit={handleSaveAd} className="glass-panel p-8 rounded-3xl sticky top-8 space-y-6">
-                  <h2 className="text-2xl font-bold font-display flex items-center gap-3">
-                    {adEditing ? <Edit3 /> : <Plus />}
-                    {adEditing ? 'Edit Ad' : 'New Ad Banner'}
+                <form onSubmit={handleSaveAd} className="glass-panel p-8 rounded-[2rem] sticky top-8 space-y-6 shadow-2xl relative overflow-hidden group">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-brand-primary/10 blur-[40px] rounded-full pointer-events-none group-hover:bg-brand-primary/20 transition-colors duration-500" />
+                  <h2 className="text-2xl font-bold font-display flex items-center gap-3 relative z-10">
+                    {adEditing ? <Edit3 className="text-brand-primary animate-bounce" /> : <Plus className="text-brand-secondary animate-pulse" />}
+                    <span className="bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent">{adEditing ? 'Edit Ad' : 'New Ad Banner'}</span>
                   </h2>
-                  <div className="space-y-4">
+                  <div className="space-y-5 relative z-10">
                     <div className="space-y-2">
                       <label className="text-xs font-bold text-white/40 uppercase tracking-widest pl-1">Ad Placement</label>
                       <div className="flex gap-2">
@@ -939,25 +990,29 @@ export default function AdminPanel() {
 
               <div className="lg:col-span-2 space-y-4">
                 <h2 className="text-2xl font-bold font-display mb-6">Active Ad Library ({ads.length})</h2>
-                {ads.map(ad => (
+                {ads.map((ad, index) => (
                   <motion.div 
                     layout
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.1, duration: 0.4 }}
                     key={ad.id}
-                    className="glass-panel p-4 rounded-2xl flex items-center gap-6 group hover:border-brand-primary/30 transition-all overflow-hidden"
+                    className="glass-panel p-4 rounded-2xl flex items-center gap-6 group hover:border-brand-primary/50 hover:shadow-[0_0_30px_rgba(255,61,0,0.15)] transition-all duration-300 relative overflow-hidden"
                   >
-                    <div className="w-40 h-24 bg-foreground/5 rounded-xl overflow-hidden shadow-lg border border-white/5">
+                    <div className="absolute inset-0 bg-gradient-to-r from-brand-primary/0 via-brand-primary/5 to-brand-primary/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 ease-in-out pointer-events-none" />
+                    <div className="w-40 h-24 bg-foreground/5 rounded-xl overflow-hidden shadow-lg border border-white/10 relative z-10 group-hover:scale-105 transition-transform duration-300">
                       {ad.mediaType === 'video' ? (
                         <video src={ad.imageUrl} className="w-full h-full object-cover" muted loop autoPlay />
                       ) : (
                         <img src={ad.imageUrl} className="w-full h-full object-cover" alt="" referrerPolicy="no-referrer" />
                       )}
                     </div>
-                    <div className="flex-1">
+                    <div className="flex-1 relative z-10">
                       <div className="flex items-center gap-2 mb-1">
-                        <h3 className="font-bold text-sm truncate max-w-[200px]">{ad.imageUrl}</h3>
+                        <h3 className="font-bold text-sm truncate max-w-[200px] group-hover:text-amber-400 transition-colors duration-300">{ad.imageUrl}</h3>
                         <span className={cn(
                           "text-[8px] font-black px-2 py-0.5 rounded tracking-tighter uppercase",
-                          ad.isActive ? "bg-green-500 text-white" : "bg-white/10 text-white/40"
+                          ad.isActive ? "bg-green-500 text-white shadow-[0_0_10px_rgba(34,197,94,0.4)] animate-pulse" : "bg-white/10 text-white/40"
                         )}>
                           {ad.isActive ? 'Live' : 'Paused'}
                         </span>
@@ -970,7 +1025,7 @@ export default function AdminPanel() {
                         <span className="flex items-center gap-1"><Eye size={10} /> {ad.type === 'trailer' ? 'Shown on Trailers' : 'Shown on Downloads'}</span>
                       </div>
                     </div>
-                    <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 relative z-10">
                       <button 
                         onClick={() => handleToggleAd(ad.id, ad.isActive)}
                         className={cn(

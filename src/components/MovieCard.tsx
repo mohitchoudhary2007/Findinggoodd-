@@ -46,10 +46,10 @@ export default function MovieCard({ movie, onWatchTrailer, onDownload }: MovieCa
       
       <div className="absolute inset-0 movie-card-gradient opacity-80 group-hover:opacity-100 transition-opacity" />
       
-      <div className="absolute inset-0 p-3 md:p-5 flex flex-col justify-end md:transform md:translate-y-4 md:group-hover:translate-y-0 transition-transform duration-300">
-        <h3 className="text-sm md:text-xl font-bold font-display mb-1 md:mb-2 drop-shadow-lg leading-tight line-clamp-2">{movie.name}</h3>
+      <div className="absolute inset-0 p-3 md:p-5 flex flex-col justify-end md:transform md:translate-y-6 md:group-hover:translate-y-0 transition-transform duration-500 ease-out z-10">
+        <h3 className="text-sm md:text-xl font-bold font-display mb-2 md:mb-3 drop-shadow-lg leading-tight line-clamp-2 md:group-hover:text-glow-effect transition-all duration-300 transform group-hover:scale-105 origin-left">{movie.name}</h3>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-1.5 md:gap-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
           <button
             onClick={() => onWatchTrailer(movie.trailerUrl)}
             className="bg-white/20 hover:bg-white/30 backdrop-blur-md text-white py-1.5 md:py-2 px-2 md:px-4 rounded-lg md:rounded-xl flex items-center justify-center gap-1.5 md:gap-2 transition-all active:scale-95"

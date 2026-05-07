@@ -145,16 +145,26 @@ export default function App() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="text-center mb-24 px-4"
+          className="text-center mb-24 px-4 relative z-10"
         >
-          <h2 className="text-5xl md:text-8xl font-black font-display mb-8 tracking-tighter leading-[0.9] drop-shadow-2xl will-change-transform transform-gpu">
+          <motion.h2 
+            initial={{ scale: 0.95, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="text-5xl md:text-8xl font-black font-display mb-8 tracking-tighter leading-[0.9] drop-shadow-2xl will-change-transform transform-gpu"
+          >
             DISCOVER YOUR <br className="hidden md:block" />
-            <span className="bg-gradient-to-r from-brand-primary via-brand-secondary to-brand-primary bg-[length:200%_auto] animate-gradient-x bg-clip-text text-transparent">NEXT STORY</span>
-          </h2>
-          <p className="text-foreground/50 text-base md:text-xl font-medium max-w-2xl mx-auto leading-relaxed">
+            <span className="bg-gradient-to-r from-brand-primary via-brand-secondary to-brand-primary bg-[length:200%_auto] bg-clip-text text-transparent animate-gradient-x inline-block">NEXT STORY</span>
+          </motion.h2>
+          <motion.p 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+            className="text-foreground/50 text-base md:text-xl font-medium max-w-2xl mx-auto leading-relaxed"
+          >
             High definition downloads, lightning speed, zero compromise. <br className="hidden md:block" />
             The ultimate companion for every cinephile.
-          </p>
+          </motion.p>
         </motion.div>
 
         <SearchBar onSearch={handleSearch} />

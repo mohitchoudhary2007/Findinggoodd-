@@ -61,12 +61,21 @@
 }
 
 .animate-gradient-x {
-  animation: gradient-x 5s ease infinite;
+  animation: gradient-x 5s ease infinite, text-glow 3s ease-in-out infinite;
 }
 
 @keyframes gradient-x {
   0%, 100% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
+}
+
+@keyframes text-glow {
+  0%, 100% { filter: drop-shadow(0 0 15px rgba(255, 61, 0, 0.3)); }
+  50% { filter: drop-shadow(0 0 30px rgba(255, 61, 0, 0.6)); }
+}
+
+.text-glow-effect {
+  text-shadow: 0 0 20px var(--color-brand-primary), 0 0 40px var(--color-brand-secondary);
 }
 
 .movie-card-gradient {

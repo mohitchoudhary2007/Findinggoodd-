@@ -78,6 +78,35 @@ export default function BackgroundDecoration() {
 
       {/* Ambient Vignette */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background/50 dark:to-background/80" />
+
+      {/* Floating Particles */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {[...Array(15)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute rounded-full bg-white opacity-20"
+            style={{
+              width: Math.random() * 4 + 2 + 'px',
+              height: Math.random() * 4 + 2 + 'px',
+              left: Math.random() * 100 + '%',
+              top: Math.random() * 100 + '%',
+              filter: `blur(${Math.random() * 2 + 1}px)`,
+            }}
+            animate={{
+              y: [0, Math.random() * -100 - 50],
+              x: [0, Math.random() * 50 - 25],
+              opacity: [0, 0.4, 0],
+              scale: [0, 1, 0.5]
+            }}
+            transition={{
+              duration: Math.random() * 5 + 5,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: Math.random() * 5
+            }}
+          />
+        ))}
+      </div>
     </div>
   );
 }
