@@ -13,6 +13,7 @@ import { Movie, AppConfig } from '@/src/types';
 import { Loader2, MessageCircle, Film } from 'lucide-react';
 
 // Components
+import BackgroundDecoration from '@/src/components/BackgroundDecoration';
 import SearchBar from '@/src/components/SearchBar';
 import TrendingBanner from '@/src/components/TrendingBanner';
 import MovieCard from '@/src/components/MovieCard';
@@ -21,6 +22,7 @@ import TrailerModal from '@/src/components/TrailerModal';
 import LegalModal from '@/src/components/LegalModal';
 import Footer from '@/src/components/Footer';
 import AdminPanel from '@/src/components/AdminPanel';
+import ThemeToggle from '@/src/components/ThemeToggle';
 
 export default function App() {
   const [isAdminView, setIsAdminView] = useState(false);
@@ -67,7 +69,8 @@ export default function App() {
 
   if (isAdminView) {
     return (
-      <div className="min-h-screen bg-bg-dark">
+      <div className="min-h-screen bg-background">
+        <ThemeToggle />
         <button 
           onClick={() => setIsAdminView(false)}
           className="fixed bottom-8 right-8 z-[110] bg-brand-primary text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-transform flex items-center gap-2 font-bold"
@@ -81,12 +84,9 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col relative overflow-x-hidden">
-      {/* Background Decor */}
-      <div className="fixed inset-0 pointer-events-none -z-10">
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-brand-primary/10 blur-[120px] rounded-full animate-pulse" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-brand-primary/5 blur-[120px] rounded-full" />
-      </div>
+    <div className="min-h-screen flex flex-col relative overflow-x-hidden bg-background text-foreground">
+      <ThemeToggle />
+      <BackgroundDecoration />
 
       <header className="pt-12 pb-20 px-6">
         <nav className="max-w-7xl mx-auto flex justify-between items-center mb-24">
@@ -108,7 +108,7 @@ export default function App() {
               <Film className="text-white" size={24} />
             </div>
             <div className="relative overflow-hidden px-2 py-1">
-              <h1 className="text-3xl font-black font-display tracking-tightest select-none bg-clip-text text-transparent bg-gradient-to-r from-white via-brand-primary to-white bg-[length:200%_auto] animate-shine">
+              <h1 className="text-3xl font-black font-display tracking-tightest select-none bg-clip-text text-transparent bg-gradient-to-r from-foreground via-brand-primary to-foreground bg-[length:200%_auto] animate-shine">
                 {config?.siteName || 'Findinggoodd'}
               </h1>
             </div>
@@ -135,7 +135,7 @@ export default function App() {
             DISCOVER YOUR <br className="hidden md:block" />
             <span className="bg-gradient-to-r from-brand-primary via-brand-secondary to-brand-primary bg-[length:200%_auto] animate-gradient-x bg-clip-text text-transparent">NEXT STORY</span>
           </h2>
-          <p className="text-white/50 text-base md:text-xl font-medium max-w-2xl mx-auto leading-relaxed">
+          <p className="text-foreground/50 text-base md:text-xl font-medium max-w-2xl mx-auto leading-relaxed">
             High definition downloads, lightning speed, zero compromise. <br className="hidden md:block" />
             The ultimate companion for every cinephile.
           </p>

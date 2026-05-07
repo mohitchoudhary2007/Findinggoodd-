@@ -1,5 +1,19 @@
-@import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+:root {
+  --background: white;
+  --foreground: #0A0A0A;
+  --surface: #F3F4F6;
+  --border: rgba(0, 0, 0, 0.1);
+}
+
+.dark {
+  --background: #0A0A0A;
+  --foreground: white;
+  --surface: #1A1A1A;
+  --border: rgba(255, 255, 255, 0.1);
+}
 
 @theme {
   --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
@@ -8,8 +22,11 @@
 
   --color-brand-primary: #FF3D00;
   --color-brand-secondary: #FFD600;
-  --color-bg-dark: #0A0A0A;
-  --color-surface: #1A1A1A;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-border: var(--border);
 
   --animate-shine: shine 4s linear infinite;
 
@@ -21,12 +38,13 @@
 
 @layer base {
   body {
-    @apply bg-bg-dark text-white font-sans antialiased selection:bg-brand-primary/30;
+    @apply bg-background text-foreground font-sans antialiased selection:bg-brand-primary/30;
+    transition: background-color 0.6s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s ease;
   }
 }
 
 .glass-panel {
-  @apply bg-surface/80 backdrop-blur-xl border border-white/10;
+  @apply bg-surface/80 backdrop-blur-xl border border-border shadow-[0_8px_32px_0_rgba(0,0,0,0.36)] dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.8)];
 }
 
 .animate-marquee {

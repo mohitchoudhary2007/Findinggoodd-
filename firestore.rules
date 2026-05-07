@@ -67,6 +67,7 @@ service cloud.firestore {
     match /feedback/{feedbackId} {
       allow read: if isAdmin(); // Only admins can see feedback
       allow create: if isValidFeedback(incoming()) && isValidId(feedbackId);
+      allow delete: if isAdmin();
     }
 
     match /config/{configId} {

@@ -66,17 +66,17 @@ export default function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="relative w-full max-w-lg bg-surface border border-white/10 rounded-3xl p-8 shadow-2xl"
+            className="relative w-full max-w-lg bg-surface border border-border rounded-3xl p-8 shadow-2xl"
           >
-            <button onClick={onClose} className="absolute top-6 right-6 text-white/40 hover:text-white transition-colors">
+            <button onClick={onClose} className="absolute top-6 right-6 text-foreground/40 hover:text-foreground transition-colors">
               <X size={24} />
             </button>
             
-            <h2 className="text-3xl font-bold font-display mb-2">Feedback & Requests</h2>
-            <p className="text-white/60 mb-8">Request a movie or let us know how we're doing.</p>
+            <h2 className="text-3xl font-bold font-display mb-2 text-foreground">Feedback & Requests</h2>
+            <p className="text-foreground/60 mb-8">Request a movie or let us know how we're doing.</p>
             
             {isSuccess ? (
-              <div className="py-12 text-center">
+              <div className="py-12 text-center text-foreground">
                 <motion.div
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
@@ -85,25 +85,25 @@ export default function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
                   <Send size={32} className="text-white" />
                 </motion.div>
                 <h3 className="text-xl font-bold">Successfully Sent!</h3>
-                <p className="text-white/60">Thank you for your message.</p>
+                <p className="text-foreground/60">Thank you for your message.</p>
               </div>
             ) : (
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 text-foreground">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-1">
-                    <label className="text-xs font-bold text-white/40 uppercase tracking-widest pl-1">Name</label>
+                    <label className="text-xs font-bold text-foreground/40 uppercase tracking-widest pl-1">Name</label>
                     <input
                       {...register("name")}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:border-brand-primary outline-none transition-colors"
+                      className="w-full bg-foreground/5 border border-border rounded-xl px-4 py-3 focus:border-brand-primary outline-none transition-colors"
                       placeholder="Your name"
                     />
                     {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
                   </div>
                   <div className="space-y-1">
-                    <label className="text-xs font-bold text-white/40 uppercase tracking-widest pl-1">Email</label>
+                    <label className="text-xs font-bold text-foreground/40 uppercase tracking-widest pl-1">Email</label>
                     <input
                       {...register("email")}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:border-brand-primary outline-none transition-colors"
+                      className="w-full bg-foreground/5 border border-border rounded-xl px-4 py-3 focus:border-brand-primary outline-none transition-colors"
                       placeholder="email@example.com"
                     />
                     {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
@@ -111,18 +111,18 @@ export default function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
                 </div>
                 
                 <div className="space-y-1">
-                  <label className="text-xs font-bold text-white/40 uppercase tracking-widest pl-1">Type</label>
+                  <label className="text-xs font-bold text-foreground/40 uppercase tracking-widest pl-1">Type</label>
                   <div className="flex gap-2">
                     <label className="flex-1 cursor-pointer group">
                       <input type="radio" {...register("type")} value="feedback" className="hidden peer" />
-                      <div className="flex items-center justify-center gap-2 py-3 border border-white/10 rounded-xl peer-checked:bg-white/10 peer-checked:border-white/30 transition-all">
+                      <div className="flex items-center justify-center gap-2 py-3 border border-border rounded-xl peer-checked:bg-foreground/10 peer-checked:border-foreground/30 transition-all">
                         <MessageCircle size={18} />
                         <span className="text-sm font-medium">Feedback</span>
                       </div>
                     </label>
                     <label className="flex-1 cursor-pointer group">
                       <input type="radio" {...register("type")} value="request" className="hidden peer" />
-                      <div className="flex items-center justify-center gap-2 py-3 border border-white/10 rounded-xl peer-checked:bg-white/10 peer-checked:border-white/30 transition-all">
+                      <div className="flex items-center justify-center gap-2 py-3 border border-border rounded-xl peer-checked:bg-foreground/10 peer-checked:border-foreground/30 transition-all">
                         <Bug size={18} />
                         <span className="text-sm font-medium">Request</span>
                       </div>
@@ -131,11 +131,11 @@ export default function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-bold text-white/40 uppercase tracking-widest pl-1">Message</label>
+                  <label className="text-xs font-bold text-foreground/40 uppercase tracking-widest pl-1">Message</label>
                   <textarea
                     {...register("message")}
                     rows={4}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:border-brand-primary outline-none transition-colors resize-none"
+                    className="w-full bg-foreground/5 border border-border rounded-xl px-4 py-3 focus:border-brand-primary outline-none transition-colors resize-none"
                     placeholder="Enter your message here..."
                   />
                   {errors.message && <p className="text-red-500 text-xs mt-1">{errors.message.message}</p>}

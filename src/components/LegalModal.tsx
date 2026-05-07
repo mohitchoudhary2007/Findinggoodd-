@@ -27,33 +27,33 @@ export default function LegalModal({ isOpen, onClose, title, content, type }: Le
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="relative w-full max-w-4xl max-h-[80vh] bg-surface border border-white/10 rounded-3xl overflow-hidden flex flex-col shadow-2xl"
+            className="relative w-full max-w-4xl max-h-[80vh] bg-surface border border-border rounded-3xl overflow-hidden flex flex-col shadow-2xl"
           >
-            <div className="p-8 border-b border-white/5 flex justify-between items-center bg-white/2">
+            <div className="p-8 border-b border-border flex justify-between items-center bg-foreground/5">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 bg-brand-primary/10 rounded-2xl flex items-center justify-center">
                   {type === 'privacy' ? <Shield className="text-brand-primary" /> : <FileText className="text-brand-primary" />}
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold font-display">{title}</h2>
-                  <p className="text-sm text-white/40">Last Updated: {new Date().toLocaleDateString()}</p>
+                  <h2 className="text-2xl font-bold font-display text-foreground">{title}</h2>
+                  <p className="text-sm text-foreground/40">Last Updated: {new Date().toLocaleDateString()}</p>
                 </div>
               </div>
               <button 
                 onClick={onClose} 
-                className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors"
+                className="w-10 h-10 rounded-full bg-foreground/5 flex items-center justify-center hover:bg-foreground/10 text-foreground transition-colors"
               >
                 <X size={20} />
               </button>
             </div>
             
-            <div className="flex-1 overflow-y-auto p-8 scrollbar-hide">
-              <div className="prose prose-invert max-w-none whitespace-pre-wrap leading-relaxed text-white/70 font-sans">
+            <div className="flex-1 overflow-y-auto p-8 scrollbar-hide text-foreground">
+              <div className="prose dark:prose-invert max-w-none whitespace-pre-wrap leading-relaxed text-foreground/70 font-sans">
                 {content || "No content has been added to this section yet. Check back soon."}
               </div>
             </div>
             
-            <div className="p-6 border-t border-white/5 bg-white/2 text-center">
+            <div className="p-6 border-t border-border bg-foreground/5 text-center">
               <button 
                 onClick={onClose}
                 className="bg-brand-primary hover:bg-brand-primary/80 text-white font-bold py-3 px-12 rounded-xl transition-all active:scale-95 shadow-lg shadow-brand-primary/20"

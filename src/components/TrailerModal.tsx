@@ -60,19 +60,19 @@ export default function TrailerModal({ url, onClose }: TrailerModalProps) {
           className="relative w-full max-w-5xl aspect-video bg-black rounded-3xl overflow-hidden shadow-2xl border border-white/5"
         >
           {showAd ? (
-            <div className="absolute inset-0 z-10 bg-bg-dark flex flex-col items-center justify-center p-8 text-center">
-              <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mb-6 animate-pulse">
+            <div className="absolute inset-0 z-10 bg-background flex flex-col items-center justify-center p-8 text-center">
+              <div className="w-16 h-16 bg-foreground/5 rounded-full flex items-center justify-center mb-6 animate-pulse">
                 <Play fill="currentColor" className="text-brand-primary" />
               </div>
               <h3 className="text-2xl font-bold bg-gradient-to-r from-brand-primary to-brand-secondary bg-clip-text text-transparent mb-2">
                 Loading Preview Experience
               </h3>
-              <p className="text-white/40 max-w-md">
+              <p className="text-foreground/40 max-w-md">
                 Trailer will start shortly. This message is brought to you by Findinggoodd.
               </p>
               
               <div className="mt-12 flex flex-col items-center gap-4">
-                <div className="w-48 h-1 bg-white/10 rounded-full overflow-hidden">
+                <div className="w-48 h-1 bg-foreground/10 rounded-full overflow-hidden">
                   <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: '100%' }}
@@ -84,7 +84,7 @@ export default function TrailerModal({ url, onClose }: TrailerModalProps) {
                 <button
                   disabled={adTimer > 0}
                   onClick={() => setShowAd(false)}
-                  className="bg-white/10 hover:bg-white/20 disabled:opacity-50 text-white px-8 py-3 rounded-full text-sm font-bold border border-white/10 transition-all"
+                  className="bg-foreground/10 hover:bg-foreground/20 disabled:opacity-50 text-foreground px-8 py-3 rounded-full text-sm font-bold border border-border transition-all"
                 >
                   {adTimer > 0 ? `Skip in ${adTimer}s` : "Skip Ad"}
                 </button>

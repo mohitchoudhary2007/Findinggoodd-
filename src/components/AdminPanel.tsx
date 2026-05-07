@@ -25,6 +25,7 @@ import { Movie, Feedback } from '@/src/types';
 import { cn } from '@/src/lib/utils';
 import { motion, AnimatePresence } from 'motion/react';
 import { toast, Toaster } from 'react-hot-toast';
+import BackgroundDecoration from '@/src/components/BackgroundDecoration';
 
 const ADMIN_PHONE = '8058349947';
 const ADMIN_EMAIL = 'mohitdudwal123@gmail.com';
@@ -228,11 +229,12 @@ export default function AdminPanel() {
 
   if (!user || !isAdmin) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-gradient-to-b from-bg-dark to-black">
+      <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-background">
+        <BackgroundDecoration />
         <motion.div 
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="w-full max-w-md glass-panel p-10 rounded-[2.5rem] border border-white/10 shadow-2xl relative overflow-hidden"
+          className="w-full max-w-md glass-panel p-10 rounded-[2.5rem] shadow-2xl relative overflow-hidden"
         >
           <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-primary/0 via-brand-primary to-brand-primary/0" />
           
@@ -241,19 +243,19 @@ export default function AdminPanel() {
               <Settings className="text-brand-primary animate-pulse-slow" size={40} />
             </div>
             <h1 className="text-4xl font-bold font-display tracking-tight mb-2">Control Tower</h1>
-            <p className="text-white/40 text-sm">Secure access for Findinggoodd administrators</p>
+            <p className="text-foreground/40 text-sm">Secure access for Findinggoodd administrators</p>
           </div>
 
           <form onSubmit={handleAdminLogin} className="space-y-5">
             <div className="space-y-2">
-              <label className="text-[10px] font-bold text-white/40 uppercase tracking-[0.2em] ml-1">Administrator Email</label>
+              <label className="text-[10px] font-bold text-foreground/40 uppercase tracking-[0.2em] ml-1">Administrator Email</label>
               <div className="relative group">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20 group-focus-within:text-brand-primary transition-colors" size={20} />
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-foreground/20 group-focus-within:text-brand-primary transition-colors" size={20} />
                 <input 
                   type="text"
                   value={loginPhone}
                   onChange={e => setLoginPhone(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 pl-12 focus:border-brand-primary outline-none transition-all placeholder:text-white/10"
+                  className="w-full bg-foreground/5 border border-border rounded-2xl p-4 pl-12 focus:border-brand-primary outline-none transition-all placeholder:text-foreground/10"
                   placeholder="admin@findinggoodd.com"
                   required
                 />
@@ -261,14 +263,14 @@ export default function AdminPanel() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-[10px] font-bold text-white/40 uppercase tracking-[0.2em] ml-1">Master Password</label>
+              <label className="text-[10px] font-bold text-foreground/40 uppercase tracking-[0.2em] ml-1">Master Password</label>
               <div className="relative group">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20 group-focus-within:text-brand-primary transition-colors" size={20} />
+                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-foreground/20 group-focus-within:text-brand-primary transition-colors" size={20} />
                 <input 
                   type="password"
                   value={loginPassword}
                   onChange={e => setLoginPassword(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 pl-12 focus:border-brand-primary outline-none transition-all placeholder:text-white/10"
+                  className="w-full bg-foreground/5 border border-border rounded-2xl p-4 pl-12 focus:border-brand-primary outline-none transition-all placeholder:text-foreground/10"
                   placeholder="••••••••••••"
                   required
                 />
@@ -322,18 +324,19 @@ export default function AdminPanel() {
   }
 
   return (
-    <div className="min-h-screen bg-bg-dark text-white p-6 md:p-12">
+    <div className="min-h-screen bg-background text-foreground p-6 md:p-12">
+      <BackgroundDecoration />
       <Toaster position="top-center" reverseOrder={false} />
       <div className="max-w-7xl mx-auto">
         <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
           <div>
             <h1 className="text-4xl font-bold font-display">Control Center</h1>
-            <p className="text-white/40">Welcome back, manager. You have total control.</p>
+            <p className="text-foreground/40">Welcome back, manager. You have total control.</p>
           </div>
           <div className="flex gap-4">
             <button 
               onClick={() => signOut(auth)}
-              className="flex items-center gap-2 bg-white/5 hover:bg-white/10 text-white/60 hover:text-white px-6 py-3 rounded-xl transition-all"
+              className="flex items-center gap-2 bg-foreground/5 hover:bg-foreground/10 text-foreground/60 hover:text-foreground px-6 py-3 rounded-xl transition-all"
             >
               <LogOut size={18} />
               Logout
@@ -680,7 +683,12 @@ export default function AdminPanel() {
                     <button 
                       onClick={async () => {
                         if (confirm("Clear this feedback?")) {
-                          await deleteDoc(doc(db, 'feedback', item.id));
+                          try {
+                            await deleteDoc(doc(db, 'feedback', item.id));
+                            toast.success('Feedback cleared');
+                          } catch (error) {
+                            handleFirestoreError(error, OperationType.DELETE, `feedback/${item.id}`);
+                          }
                         }
                       }}
                       className="p-3 bg-white/5 hover:bg-white/10 rounded-xl transition-all"
