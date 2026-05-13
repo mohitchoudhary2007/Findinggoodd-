@@ -30,7 +30,6 @@ import BackgroundDecoration from '@/src/components/BackgroundDecoration';
 
 const ADMIN_PHONE = '8058349947';
 const ADMIN_EMAIL = 'mohitdudwal123@gmail.com';
-const ADMIN_PASSWORD = '@#Mohit2007';
 
 export default function AdminPanel() {
   const [user, setUser] = useState<any>(null);
@@ -173,13 +172,6 @@ export default function AdminPanel() {
     
     setIsLoggingIn(true);
     setLoginError(null);
-
-    // Hardcoded password verification as requested
-    if (loginPassword !== ADMIN_PASSWORD) {
-      setLoginError('Incorrect Security Password.');
-      setIsLoggingIn(false);
-      return;
-    }
 
     try {
       // Use the email for backend authentication

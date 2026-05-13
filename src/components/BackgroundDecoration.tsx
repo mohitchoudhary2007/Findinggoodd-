@@ -35,7 +35,6 @@ export default function BackgroundDecoration() {
 
       {/* Floating Orbs */}
       <motion.div 
-        style={{ y: y1 }}
         animate={{
           x: [0, 150, -50, 0],
           y: [0, 100, -100, 0],
@@ -48,11 +47,10 @@ export default function BackgroundDecoration() {
           ease: "easeInOut"
         }}
         className="absolute top-[-20%] left-[-20%] w-[70%] max-w-[800px] aspect-square rounded-full will-change-transform transform-gpu opacity-70 md:opacity-100"
-        style={{ background: 'radial-gradient(circle, var(--color-brand-primary) 0%, transparent 60%)', mixBlendMode: 'screen', opacity: 0.15 } as any}
+        style={{ y: y1, background: 'radial-gradient(circle, var(--color-brand-primary) 0%, transparent 60%)', mixBlendMode: 'screen', opacity: 0.15 } as any}
       />
 
       <motion.div 
-        style={{ y: y2 }}
         animate={{
           x: [0, -150, 50, 0],
           y: [0, -100, 100, 0],
@@ -65,7 +63,7 @@ export default function BackgroundDecoration() {
           ease: "easeInOut"
         }}
         className="absolute bottom-[-20%] right-[-20%] w-[70%] max-w-[800px] aspect-square rounded-full will-change-transform transform-gpu opacity-70 md:opacity-100"
-        style={{ background: 'radial-gradient(circle, var(--color-brand-secondary) 0%, transparent 60%)', mixBlendMode: 'screen', opacity: 0.1 } as any}
+        style={{ y: y2, background: 'radial-gradient(circle, var(--color-brand-secondary) 0%, transparent 60%)', mixBlendMode: 'screen', opacity: 0.1 } as any}
       />
 
       {/* Interactive Spotlight */}
